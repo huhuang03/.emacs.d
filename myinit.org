@@ -21,7 +21,6 @@
                         flycheck
                         ace-jump-mode
                         evil
-                        projectile
                         monokai-theme
                         key-chord
                         general
