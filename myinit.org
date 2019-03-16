@@ -855,13 +855,6 @@ TODO
 
 (add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
 #+END_SRC
-* ss mode
-  The shadowsocket user rule edit mode
-#+BEGIN_SRC emacs-lisp
-(setq load-path
-    (cons "/Users/th/source/emacs-ss" load-path))
-(require 'ss)
-#+END_SRC
 * add comment abbrev in c and c++ mode
   好吧我承认现在我还不能实现
 #+BEGIN_SRC emacs-lisp
