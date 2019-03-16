@@ -34,8 +34,7 @@
  '(org-agenda-files (quote ("~/source/org/gtd.org")))
  '(package-selected-packages
    (quote
-    (epa-file elfeed jedi flycheck htmlize ox-reveal counsel ace-window org-bullets try use-package helm-projectile magit yaml-mode evil monokai-theme key-chord hungry-delete which-key general groovy-mode elpy smali-mode exec-path-from-shell markdown-mode helm-swoop csharp-mode omnisharp evil-surround auto-complete yasnippet auto-complete-c-headers projectile all-the-icons lua-mode)))
- '(projectile-mode t nil (projectile))
+    (epa-file elfeed jedi flycheck htmlize ox-reveal counsel ace-window org-bullets try use-package magit yaml-mode evil monokai-theme key-chord hungry-delete which-key general groovy-mode elpy smali-mode exec-path-from-shell markdown-mode helm-swoop csharp-mode omnisharp evil-surround auto-complete yasnippet auto-complete-c-headers projectile all-the-icons lua-mode)))
  '(safe-local-variable-values
    (quote
     ((flycheck-clang-include-path quote
