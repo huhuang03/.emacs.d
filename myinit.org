@@ -30,7 +30,7 @@
                         auto-complete-c-headers
                         company
                         all-the-icons
-                        magit))
+                        ))
 
 (defvar th-packages (append th-lang_mode th-common_pkg))
 
