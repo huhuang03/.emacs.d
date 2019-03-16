@@ -1,0 +1,1 @@
+自己平时用到的，emcas自动补全插件yasnnipt的template

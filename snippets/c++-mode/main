@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: main
+# key: main
+# --
+#include <iostream>
+using namespace std;
+
+int main(${1:int argc, char *argv[argc]})
+{
+    $0
+    return 0;
+}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: _version
+# key: _version
+# --
+cmake_minimum_required(VERSION 3.4.1)
