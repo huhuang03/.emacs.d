@@ -68,7 +68,8 @@
 #+END_SRC
 * Org-mode
 #+BEGIN_SRC emacs-lisp
-(require 'org-mac-link)
+  (when (eq system-type 'darwin)
+      (require 'org-mac-link))
 #+END_SRC
 * cmake mode
 #+BEGIN_SRC emacs-lisp
