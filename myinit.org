@@ -809,14 +809,6 @@ TODO
     (set-window-start nil unscroll-window-start)
     (set-window-hscroll nil unscroll-hscroll))
 #+END_SRC
-* org-reveal
-  #+BEGIN_SRC emacs-lisp
-    (use-package ox-reveal
-      :ensure t
-      :config (use-package htmlize
-                :ensure t)
-      (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")) 
-  #+END_SRC
 * try
 #+BEGIN_SRC emacs-lisp
 (use-package try
