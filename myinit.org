@@ -11,12 +11,15 @@
                        csharp-mode
                        yaml-mode
                        lua-mode
+                       nand2tetris
                        web-mode
                        cmake-mode
                        markdown-mode))
 
 (setq th-common_pkg '(
                       	github-modern-theme
+                        projectile
+                        tiny
                         yasnippet
                         flycheck
                         ace-jump-mode
@@ -67,9 +70,10 @@
 (setq general-default-keymaps 'evil-normal-state-map)
 #+END_SRC
 * Org-mode
+* projectile
 #+BEGIN_SRC emacs-lisp
-  (when (eq system-type 'darwin)
-      (require 'org-mac-link))
+  (projectile-mode +1)
+  (define-key evil-normal-state-map " p" 'projectile-command-map)
 #+END_SRC
 * cmake mode
 #+BEGIN_SRC emacs-lisp
@@ -101,6 +105,18 @@
 ;; 一直使用对称加密
 (setq epa-file-select-keys 0)
 (setq epa-pinentry-mode 'loopback)
+#+END_SRC
+* nand2tetris
+** hdl
+#+BEGIN_SRC emacs-lisp
+  (setq nand2tetris-core-base-dir "~/source/clone/nand2tetris")
+;;  (require 'nand2tetris)
+  (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode))
+#+END_SRC
+** jack
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(require 'jack-mode)
 #+END_SRC
 * Env
 #+BEGIN_SRC emacs-lisp
@@ -385,12 +401,18 @@ TODO
 (global-set-key (kbd "C-S-l") 'indent-region)
 #+END_SRC
 ** quick open file
-#+BEGIN_SRC emacs-lisp
-(define-key evil-normal-state-map " ft" 'th-open-org-file)
-(define-key evil-normal-state-map " fc" 'th-open-config-file)
-(define-key evil-normal-state-map " fp" 'th-open-pass-file)
-(define-key evil-normal-state-map " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt")))
-(define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file "~/source/org/note.org")))
+#+BEGIN_SRC emacs-lisp  
+  (defun th-lambda-open-file (path)
+    `(lambda ()
+      (interactive)
+      (find-file ,path)))
+  (define-key evil-normal-state-map " ft" 'th-open-org-file)
+  (define-key evil-normal-state-map " fc" 'th-open-config-file)
+  (define-key evil-normal-state-map " fpp" 'th-open-pass-file)
+  (define-key evil-normal-state-map " fpo" (th-lambda-open-file "~/source/password/password_no_password.org"))
+  (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org")))
+  (define-key evil-normal-state-map " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt")))
+  (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file "~/source/org/note.org")))
 #+END_SRC
 ** which key
   Brings up some help
@@ -429,6 +451,7 @@ TODO
 
         "<SPC>fd" "open dot file"
         "<SPC>fo" "open org file"
+        "<SPC>fpo" "pwd file without pwd"
 
         "<SPC> bb" "switch buffer"
         "<SPC> bk" "kill buffer"
@@ -437,6 +460,9 @@ TODO
         "<SPC>p" "project operators"
         ))
   #+END_SRC
+* tiny module
+(require 'tiny)
+(tiny-setup-default)
 * move around
 ** move between windows
 #+BEGIN_SRC emacs-lisp
