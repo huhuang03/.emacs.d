@@ -19,6 +19,7 @@
 (setq th-common_pkg '(
                       	github-modern-theme
                         projectile
+                        htmlize
                         tiny
                         yasnippet
                         flycheck
@@ -70,6 +71,19 @@
 (setq general-default-keymaps 'evil-normal-state-map)
 #+END_SRC
 * Org-mode
+** toggle link display
+#+BEGIN_SRC emacs-lisp
+(defun org-toggle-link-display ()
+  "Toggle the literal or descriptive display of links."
+  (interactive)
+  (if org-descriptive-links
+      (progn (org-remove-from-invisibility-spec '(org-link))
+         (org-restart-font-lock)
+         (setq org-descriptive-links nil))
+    (progn (add-to-invisibility-spec '(org-link))
+       (org-restart-font-lock)
+       (setq org-descriptive-links t))))
+#+END_SRC
 * projectile
 #+BEGIN_SRC emacs-lisp
   (projectile-mode +1)
@@ -109,7 +123,7 @@
 * nand2tetris
 ** hdl
 #+BEGIN_SRC emacs-lisp
-  (setq nand2tetris-core-base-dir "~/source/clone/nand2tetris")
+  (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
 ;;  (require 'nand2tetris)
   (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode))
 #+END_SRC
@@ -410,6 +424,7 @@ TODO
   (define-key evil-normal-state-map " fc" 'th-open-config-file)
   (define-key evil-normal-state-map " fpp" 'th-open-pass-file)
   (define-key evil-normal-state-map " fpo" (th-lambda-open-file "~/source/password/password_no_password.org"))
+  (define-key evil-normal-state-map " fb" (lambda () (interactive) (helm-find-files-1 "~/source/huhuang03.github.io/posts/")))
   (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org")))
   (define-key evil-normal-state-map " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt")))
   (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file "~/source/org/note.org")))
@@ -558,8 +573,7 @@ TODO
 #+BEGIN_SRC emacs-lisp
   (defun find-file-from-home ()
     (interactive)
-    (helm-find-files-1 "~/")
-    )
+    (helm-find-files-1 "~/"))
 
     (use-package helm-swoop
       :ensure t
