@@ -131,6 +131,7 @@
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (require 'jack-mode)
+(add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
 #+END_SRC
 * Env
 #+BEGIN_SRC emacs-lisp
