@@ -1,0 +1,8 @@
+ls
+ln -s ../Keyboard.jack .
+exit
+ls
+cd SysTest/
+ln -s ../Sys.jack .
+ls
+exit
