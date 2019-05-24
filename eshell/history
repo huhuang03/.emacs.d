@@ -6,3 +6,11 @@ cd SysTest/
 ln -s ../Sys.jack .
 ls
 exit
+167 / 16
+python
+cd
+cd tmp/
+ls
+ls
+./a
+./a.out

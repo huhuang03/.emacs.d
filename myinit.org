@@ -71,6 +71,20 @@
 (setq general-default-keymaps 'evil-normal-state-map)
 #+END_SRC
 * Org-mode
+** org-mode chinese table
+#+BEGIN_SRC emacs-lisp
+  (defun th_set-buffer-variable-pitch ()
+    (interactive)
+    (variable-pitch-mode t)
+    (setq line-spacing 3)
+    (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-link nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-date nil :inherit 'fixed-pitch)
+    )
+  (add-hook 'org-mode-hook 'th_set-buffer-variable-pitch)
+#+END_SRC
 ** toggle link display
 #+BEGIN_SRC emacs-lisp
 (defun org-toggle-link-display ()
