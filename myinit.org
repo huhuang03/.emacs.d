@@ -197,6 +197,10 @@
 (define-key evil-normal-state-map " jc" 'ace-jump-char-mode)
 #+END_SRC
 * UI
+** try set front size
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil :height 180)
+#+END_SRC
 #+BEGIN_SRC emacs-lisp
 (tool-bar-mode -1)
 (show-paren-mode)
