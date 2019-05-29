@@ -147,6 +147,29 @@
 (require 'jack-mode)
 (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
 #+END_SRC
+* Intel assembly
+#+BEGIN_SRC emacs-lisp
+(defun th_to-asm ()
+  (interactive)
+  (let (-fname
+        -oname
+        -obuffer_name
+        -obuffer
+        -command)
+    (progn
+      (setq -fname (buffer-file-name))
+      (setq -oname (concat (file-name-sans-extension -fname) ".s"))
+      (setq -obuffer_name (file-name-nondirectory -oname))
+      (setq -command (concat "gcc -Og -S " -fname " -o " -oname))
+      (shell-command  -command "*th-c-to-intel-asm*")
+
+      (setq -obuffer (get-buffer -obuffer_name))
+      (when -obuffer
+        (with-current-buffer -obuffer
+          (revert-buffer :ignore-auto :noconfirm :preserve-modes)))
+      ))
+  )
+#+END_SRC
 * Env
 #+BEGIN_SRC emacs-lisp
 (setq default-process-coding-system '(utf-8 . utf-8))
@@ -913,9 +936,4 @@ TODO
     (add-hook 'after-change-functions 'th-headline-auto-indent t t))
 
 (add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
-#+END_SRC
-* add comment abbrev in c and c++ mode
-  好吧我承认现在我还不能实现
-#+BEGIN_SRC emacs-lisp
-
 #+END_SRC
