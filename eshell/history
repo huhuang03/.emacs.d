@@ -14,3 +14,8 @@ ls
 ls
 ./a
 ./a.out
+ls
+cp e_2.94.org e_2.95.org
+exit
+cp e_2.95.org e_2.96.org
+exit
