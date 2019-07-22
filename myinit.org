@@ -265,7 +265,7 @@
              ("sh". "sh")
              ("lua". "lua")
              ("rb". "ruby")
-             ("cpp" . "g++")
+             ("cpp" . "g++ --std=c++11")
              ("js" . "node")
              ))
           -fname
