@@ -19,6 +19,7 @@
 (setq th-common_pkg '(
                       	github-modern-theme
                         projectile
+                        neotree
                         htmlize
                         tiny
                         yasnippet
@@ -62,13 +63,29 @@
     :config
     (evil-mode 1))
 #+END_SRC
-* which-key
+** which-key
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
   :ensure t
   :config
   (which-key-mode))
 (setq general-default-keymaps 'evil-normal-state-map)
+#+END_SRC
+** neotree
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-1") 'neotree-toggle)
+#+END_SRC
+*** config with evil
+#+BEGIN_SRC emacs-lisp
+(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 #+END_SRC
 * Org-mode
 ** org-mode eval src block
