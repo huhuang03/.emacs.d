@@ -87,48 +87,68 @@
 (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
 (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 #+END_SRC
-* Org-mode
-** org-mode eval src block
-#+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'org
-    (org-babel-do-load-languages 'org-babel-load-languages '((ruby . t))))
-#+END_SRC
-** org-mode chinese table
-#+BEGIN_SRC emacs-lisp
-  (defun th_set-buffer-variable-pitch ()
-    (interactive)
-    (variable-pitch-mode t)
-    (setq line-spacing 3)
-    (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-link nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-date nil :inherit 'fixed-pitch)
-    )
-  (add-hook 'org-mode-hook 'th_set-buffer-variable-pitch)
-#+END_SRC
-** toggle link display
-#+BEGIN_SRC emacs-lisp
-(defun org-toggle-link-display ()
-  "Toggle the literal or descriptive display of links."
-  (interactive)
-  (if org-descriptive-links
-      (progn (org-remove-from-invisibility-spec '(org-link))
-         (org-restart-font-lock)
-         (setq org-descriptive-links nil))
-    (progn (add-to-invisibility-spec '(org-link))
-       (org-restart-font-lock)
-       (setq org-descriptive-links t))))
-#+END_SRC
-* projectile
+* The package
+** org mode
+*** org-mode eval src block
+ #+BEGIN_SRC emacs-lisp
+   (with-eval-after-load 'org
+     (org-babel-do-load-languages 'org-babel-load-languages '((ruby . t))))
+ #+END_SRC
+*** org-mode chinese table
+ #+BEGIN_SRC emacs-lisp
+   (defun th_set-buffer-variable-pitch ()
+     (interactive)
+     (variable-pitch-mode t)
+     (setq line-spacing 3)
+     (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-link nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+     (set-face-attribute 'org-date nil :inherit 'fixed-pitch)
+     )
+   (add-hook 'org-mode-hook 'th_set-buffer-variable-pitch)
+ #+END_SRC
+*** toggle link display
+ #+BEGIN_SRC emacs-lisp
+ (defun org-toggle-link-display ()
+   "Toggle the literal or descriptive display of links."
+   (interactive)
+   (if org-descriptive-links
+       (progn (org-remove-from-invisibility-spec '(org-link))
+          (org-restart-font-lock)
+          (setq org-descriptive-links nil))
+     (progn (add-to-invisibility-spec '(org-link))
+        (org-restart-font-lock)
+        (setq org-descriptive-links t))))
+ #+END_SRC
+** projectile
 #+BEGIN_SRC emacs-lisp
   (projectile-mode +1)
   (define-key evil-normal-state-map " p" 'projectile-command-map)
 #+END_SRC
-* cmake mode
-#+BEGIN_SRC emacs-lisp
-(require 'cmake-mode)
+** cmake mode
+ #+BEGIN_SRC emacs-lisp
+ (require 'cmake-mode)
+ #+END_SRC
+** nand2tetris
+*** hdl
+ #+BEGIN_SRC emacs-lisp
+   (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
+ ;;  (require 'nand2tetris)
+   (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode))
+ #+END_SRC
+*** jack
+ #+BEGIN_SRC emacs-lisp
+ (add-to-list 'load-path "~/.emacs.d/lisp/")
+ (require 'jack-mode)
+ (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
+ #+END_SRC
+* Th
+** the abbr
+#+BEGIN_SRC 
+
 #+END_SRC
+*** TODO <se to expand to emacs-lisp code block
 * Encrypt
 #+BEGIN_SRC emacs-lisp
 ;; org-mode 设定
@@ -155,19 +175,6 @@
 ;; 一直使用对称加密
 (setq epa-file-select-keys 0)
 (setq epa-pinentry-mode 'loopback)
-#+END_SRC
-* nand2tetris
-** hdl
-#+BEGIN_SRC emacs-lisp
-  (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
-;;  (require 'nand2tetris)
-  (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode))
-#+END_SRC
-** jack
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(require 'jack-mode)
-(add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
 #+END_SRC
 * Intel assembly
 #+BEGIN_SRC emacs-lisp
