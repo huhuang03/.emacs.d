@@ -11,6 +11,7 @@
                        csharp-mode
                        yaml-mode
                        lua-mode
+                       go-mode
                        nand2tetris
                        web-mode
                        cmake-mode
@@ -145,10 +146,128 @@
  #+END_SRC
 * Th
 ** the abbr
-#+BEGIN_SRC 
-
-#+END_SRC
 *** TODO <se to expand to emacs-lisp code block
+** f8 to execute source
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f8>") 'th_run-current-file)
+
+  (setq th-link-lua "-L/usr/local/lib -llua -llualib")
+
+  (defun th_run-current-file ()
+    "Execute the currnt file.
+  For example, if the file is a.c, then it'll call gcc a.c and then call ./a.out"
+    (interactive)
+    (let (
+          (-suffix-map
+           `(
+             ("c" . "gcc")
+             ("gradle" . "gradle")
+             ("py" . "python")
+             ("sh". "sh")
+             ("lua". "lua")
+             ("rb". "ruby")
+             ("cpp" . "g++ --std=c++11")
+             ("js" . "node")
+             ("go" . "go")
+             ))
+          -fname
+          -fnameNoExtension
+          -fSuffix
+          -prog-name
+          -is-scratch
+          -cmd-str)
+
+      (setq -is-scratch (string= (buffer-name) "*scratch*"))
+      (if -is-scratch
+          (eval-buffer)
+        (progn
+          (setq -fname (buffer-file-name))
+          (setq -fnameNoExtension (file-name-sans-extension -fname))
+          (setq -fSuffix (file-name-extension -fname))
+          (setq -prog-name (cdr (assoc -fSuffix -suffix-map)))
+          (setq -cmd-str (concat -prog-name " \"" -fname "\""))
+          (setq -output-buffer "*th_run-current-file*")
+          (when (not (buffer-file-name)) (save-buffer))
+          (when (buffer-modified-p) (save-buffer))
+          (cond
+           ((string-equal -fSuffix "el") (load -fname))
+           ((string-equal -fSuffix "py")
+            (progn
+              (if (is-python3-p -fname)
+                  (shell-command (concat "python3 " -fname) "*th_run-current-file*")
+                (shell-command (concat "python " -fname) "*th_run-current-file*"))))
+           ((string-equal -fSuffix "c")
+            (progn
+              (setq source-files (th-get-source-files -fname))
+              (setq fname-nodir (file-name-nondirectory -fname))
+              (setq -cmd-str (concat -prog-name " " fname-nodir source-files))
+              (if (contains-lua-p buffer-file-name)
+                  (setq -cmd-str (concat -cmd-str " " th-link-lua)))
+              (shell-command -cmd-str "*th_run-current-file outout*")
+              (shell-command "./a.out")))
+           ((string-equal -fSuffix "cpp")
+            (progn
+              (setq source-files (th-get-source-files -fname))
+              (setq fname-nodir (file-name-nondirectory -fname))
+              (setq -cmd-str (concat -prog-name " " fname-nodir source-files))
+              (shell-command -cmd-str "*th_run-current-file outout*")
+              (shell-command "./a.out")))
+           ((string-equal -fSuffix "go")
+            (progn
+              (shell-command (concat -prog-name " build " -fname) -output-buffer)
+              (shell-command (concat -fnameNoExtension) -output-buffer)))
+           ((string-equal -fSuffix "gradle") (shell-command "gradle -q build"))
+           (t (if -prog-name
+                  (progn
+                      (message "Running...")
+                      (shell-command -cmd-str)
+                      )
+                  (message "No recognized program file suffix for this file."))))
+          )
+        )))
+        
+
+  (defun is-python3-p (filepath)
+    "得到FILEPATH文件中是否#python3."
+    (let ((lines (th-read-lines filepath)))
+      (catch 'contains
+        (progn
+          (dolist (line lines)
+            (if (string-match "^#python3" line)
+                (throw 'contains t)))
+          nil))))
+
+  (defun contains-lua-p (filepath)
+    "得到FILEPATH文件中是否include lua.h."
+    (let ((lines (th-read-lines filepath)))
+      (catch 'contains
+        (progn
+          (dolist (line lines)
+            (if (string-match "^#include <lua.h>" line)
+                (throw 'contains t)))
+          nil))))
+
+  (defun th-get-source-files (filepath)
+      "得到源文件中所有通过#include \"xx.h\" 形式引入的头文件对应的[ xx.c yy.c]源文件列表
+  如果存在，则返回a.c b.c 这样的字符串。如果没有，则返回空字符串
+  Edit: 2018-6-17 过滤a.c中include \"a.h\"导入同名称头文件
+  2017年02月24日"
+      (let (
+              (lines (th-read-lines filepath))
+              (source_fn (file-name-nondirectory filepath))
+              (rst ""))
+      (dolist (line lines)
+          (if (string-match "^#include \"\\(.*\\)\"\s*$" line)
+              (progn
+          (setq fileName (match-string 1 line))
+          (when (string-match "[ \t]*$" fileName)
+              (setq fileName (replace-match "" nil nil fileName)))
+          (setq fileName (replace-regexp-in-string "h$" "c" fileName))
+          (when (not (string= fileName source_fn))
+              (setq rst (concat rst " " fileName))))
+          (message "not found %s" line)))
+      rst))
+#+END_SRC
 * Encrypt
 #+BEGIN_SRC emacs-lisp
 ;; org-mode 设定
@@ -271,120 +390,6 @@
                     "wm" 'toggle-frame-maximized)
 #+END_SRC
 
-* Quick Run file
-#+BEGIN_SRC emacs-lisp
-    ;; run current file
-  (setq th-link-lua "-L/usr/local/lib -llua -llualib")
-
-  (defun th-run-current-file ()
-    "Execute the currnt file.
-  For example, if the file is a.c, then it'll call gcc a.c and then call ./a.out"
-    (interactive)
-    (let (
-          (-suffix-map
-           `(
-             ("c" . "gcc")
-             ("gradle" . "gradle")
-             ("py" . "python")
-             ("sh". "sh")
-             ("lua". "lua")
-             ("rb". "ruby")
-             ("cpp" . "g++ --std=c++11")
-             ("js" . "node")
-             ))
-          -fname
-          -fSuffix
-          -prog-name
-          -is-scratch
-          -cmd-str)
-
-      (setq -is-scratch (string= (buffer-name) "*scratch*"))
-      (if -is-scratch
-          (eval-buffer)
-        (progn
-          (setq -fname (buffer-file-name))
-          (setq -fSuffix (file-name-extension -fname))
-          (setq -prog-name (cdr (assoc -fSuffix -suffix-map)))
-          (setq -cmd-str (concat -prog-name " \"" -fname "\""))
-          (when (not (buffer-file-name)) (save-buffer))
-          (when (buffer-modified-p) (save-buffer))
-          (cond
-           ((string-equal -fSuffix "el") (load -fname))
-           ((string-equal -fSuffix "py")
-            (progn
-              (if (is-python3-p -fname)
-                  (shell-command (concat "python3 " -fname) "*th-run-current-file*")
-                (shell-command (concat "python " -fname) "*th-run-current-file*"))))
-           ((string-equal -fSuffix "c")
-            (progn
-              (setq source-files (th-get-source-files -fname))
-              (message source-files)
-              (setq fname-nodir (file-name-nondirectory -fname))
-              (message -prog-name)
-              (setq -cmd-str (concat -prog-name " " fname-nodir source-files))
-              (if (contains-lua-p buffer-file-name)
-                  (setq -cmd-str (concat -cmd-str " " th-link-lua)))
-              (shell-command -cmd-str "*th-run-current-file outout*")
-              (shell-command "./a.out")))
-           ((string-equal -fSuffix "cpp")
-            (progn
-              (setq source-files (th-get-source-files -fname))
-              (setq fname-nodir (file-name-nondirectory -fname))
-              (message -prog-name)
-              (setq -cmd-str (concat -prog-name " " fname-nodir source-files))
-              (shell-command -cmd-str "*th-run-current-file outout*")
-              (shell-command "./a.out")))
-           ((string-equal -fSuffix "gradle") (shell-command "gradle -q build"))
-           (t (if -prog-name
-                  (progn
-                      (message "Running...")
-                      (shell-command -cmd-str)
-                      )
-                  (message "No recognized program file suffix for this file."))))
-          )
-        )))
-
-  (defun is-python3-p (filepath)
-    "得到FILEPATH文件中是否#python3."
-    (let ((lines (th-read-lines filepath)))
-      (catch 'contains
-        (progn
-          (dolist (line lines)
-            (if (string-match "^#python3" line)
-                (throw 'contains t)))
-          nil))))
-
-  (defun contains-lua-p (filepath)
-    "得到FILEPATH文件中是否include lua.h."
-    (let ((lines (th-read-lines filepath)))
-      (catch 'contains
-        (progn
-          (dolist (line lines)
-            (if (string-match "^#include <lua.h>" line)
-                (throw 'contains t)))
-          nil))))
-
-  (defun th-get-source-files (filepath)
-      "得到源文件中所有通过#include \"xx.h\" 形式引入的头文件对应的[ xx.c yy.c]源文件列表
-  如果存在，则返回a.c b.c 这样的字符串。如果没有，则返回空字符串
-  Edit: 2018-6-17 过滤a.c中include \"a.h\"导入同名称头文件
-  2017年02月24日"
-      (let (
-              (lines (th-read-lines filepath))
-              (source_fn (file-name-nondirectory filepath))
-              (rst ""))
-      (dolist (line lines)
-          (if (string-match "^#include \"\\(.*\\)\"\s*$" line)
-              (progn
-          (setq fileName (match-string 1 line))
-          (when (string-match "[ \t]*$" fileName)
-              (setq fileName (replace-match "" nil nil fileName)))
-          (setq fileName (replace-regexp-in-string "h$" "c" fileName))
-          (when (not (string= fileName source_fn))
-              (setq rst (concat rst " " fileName))))
-          (message "not found %s" line)))
-      rst))
-#+END_SRC
 * my self function
   #+BEGIN_SRC emacs-lisp
     (defun th-open-config-file ()
@@ -856,7 +861,6 @@ TODO
 (electric-pair-mode t)
 
 
-(global-set-key (kbd "<f8>") 'th-run-current-file)
 
 ;; add make file to makefile-mode
 (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
