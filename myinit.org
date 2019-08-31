@@ -145,8 +145,6 @@
  (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
  #+END_SRC
 * Th
-** the abbr
-*** TODO <se to expand to emacs-lisp code block
 ** f8 to execute source
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f8>") 'th_run-current-file)
@@ -268,6 +266,10 @@
           (message "not found %s" line)))
       rst))
 #+END_SRC
+** c-w to start eshell mode
+ #+BEGIN_SRC emacs-lisp
+    (global-set-key (kbd "C-x t") 'eshell)
+ #+END_SRC
 * Encrypt
 #+BEGIN_SRC emacs-lisp
 ;; org-mode 设定
