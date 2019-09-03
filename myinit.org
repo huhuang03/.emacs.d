@@ -170,6 +170,75 @@
 (define-key global-map (kbd "C-c SPC") 'ace-jump-char-mode)
 (define-key evil-normal-state-map " jc" 'ace-jump-char-mode)
 #+END_SRC
+** Company
+#+BEGIN_SRC  emacs-lisp
+;; config company
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
+
+
+;; custom org mode
+;; C-c [ to add file to agenda-files
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+
+
+;; turn on recentf files feature
+(recentf-mode 1)
+
+;; auto follow link
+(setq vc-follow-symlinks 1)
+
+(when (display-graphic-p)
+    (scroll-bar-mode -1))
+
+(global-linum-mode 1) ; alway shwo line numbers
+(setq make-backup-files nil) ; stop creating backup~ files
+(setq auto-save-default nil) ; stop creating #autosave# files
+(electric-pair-mode t)
+
+
+
+;; add make file to makefile-mode
+(add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
+
+;; keys
+(defun th-open-org-file ()
+  "Open org file"
+  (interactive)
+  (find-file "~/source/org/gtd.org"))
+#+END_SRC
+** yasnippet
+#+BEGIN_SRC emacs-lisp
+(require 'yasnippet)
+(yas-global-mode)
+#+END_SRC
+
+** flycheck
+#+BEGIN_SRC emacs-lisp
+(global-flycheck-mode)
+#+END_SRC
+*** flycheck c include path
+#+BEGIN_SRC emacs-lisp
+  (defun th-c-mode-common-hook ()
+    (setq flycheck-clang-include-path (list "/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7"
+                                            "/Users/th/source/libs/c/vector")))
+  (add-hook 'c-mode-common-hook 'th-c-mode-common-hook)
+#+END_SRC
+*** flycheck support c++11
+#+BEGIN_SRC emacs-lisp
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+#+END_SRC
+
+*** flycheck next error
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f2>") 'flycheck-next-error)
+  (global-set-key (kbd "S-<f2>") 'flycheck-previous-error)
+#+END_SRC
+
 * Th
 ** f8 to execute source
 #+BEGIN_SRC emacs-lisp
@@ -722,29 +791,6 @@ TODO
     (moe-light)
     (set-face-attribute 'default nil :background "#ffffff" :foreground "#5f5f5f"))
 #+END_SRC
-** flycheck
-#+BEGIN_SRC emacs-lisp
-(global-flycheck-mode)
-#+END_SRC
-*** flycheck c include path
-#+BEGIN_SRC emacs-lisp
-  (defun th-c-mode-common-hook ()
-    (setq flycheck-clang-include-path (list "/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7"
-                                            "/Users/th/source/libs/c/vector")))
-  (add-hook 'c-mode-common-hook 'th-c-mode-common-hook)
-#+END_SRC
-*** flycheck support c++11
-#+BEGIN_SRC emacs-lisp
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
-#+END_SRC
-
-*** flycheck next error
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f2>") 'flycheck-next-error)
-  (global-set-key (kbd "S-<f2>") 'flycheck-previous-error)
-#+END_SRC
-
 ** bind command-; to coment-or-uncommand region
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-/") 'comment-or-uncomment-region)
@@ -755,7 +801,6 @@ TODO
 (setq-default tab-width 4)
 (add-hook 'python-mode-hook (lambda () (setq tab-width 4)))
 #+END_SRC
-** change the syntax hightlighting
 * edit
 ** insert time and date
 #+BEGIN_SRC emacs-lisp
@@ -775,12 +820,6 @@ TODO
     (interactive "*")
     (insert (format-time-string insert-date-format (current-time))))
 #+END_SRC
-* yasnippet
-#+BEGIN_SRC emacs-lisp
-(require 'yasnippet)
-(yas-global-mode)
-#+END_SRC
-
 * php mode
 #+BEGIN_SRC emacs-lisp
   (use-package php-mode
@@ -861,108 +900,3 @@ TODO
 ;; config not tab
 (setq-default indent-tabs-mode nil)
 #+END_SRC
-* Company
-#+BEGIN_SRC  emacs-lisp
-;; config company
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
-
-
-;; custom org mode
-;; C-c [ to add file to agenda-files
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-
-
-;; turn on recentf files feature
-(recentf-mode 1)
-
-;; auto follow link
-(setq vc-follow-symlinks 1)
-
-(when (display-graphic-p)
-    (scroll-bar-mode -1))
-
-(global-linum-mode 1) ; alway shwo line numbers
-(setq make-backup-files nil) ; stop creating backup~ files
-(setq auto-save-default nil) ; stop creating #autosave# files
-(electric-pair-mode t)
-
-
-
-;; add make file to makefile-mode
-(add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
-
-;; keys
-(defun th-open-org-file ()
-  "Open org file"
-  (interactive)
-  (find-file "~/source/org/gtd.org"))
-#+END_SRC
-* debug
-#+BEGIN_SRC emacs-lisp
-(global-set-key "\M-?" 'help-command)
-#+END_SRC
-** undo scrool up n times
-#+BEGIN_SRC emacs-lisp
-  (defvar unscroll-point (make-marker)
-    "Cursor position for next call to 'unscroll'.")
-
-  (defvar unscroll-window-start (make-marker)
-    "Window start for next cal to 'unscroll'.")
-
-  (defvar unscroll-hscroll nil
-    "Hscroll for next call to 'unscroll'.")
-
-  (put 'scroll-up 'unscrollable t)
-  (put 'scroll-down 'unscrollable t)
-  (put 'scroll-left 'unscrollable t)
-  (put 'scroll-right 'unscrollable t)
-
-  (defun unscroll-maybe-remember ()
-    "Common function for 'unscroll'."
-    (if (not (get last-command 'unscrollable))
-        (progn
-          (set-marker unscroll-point (point))
-          (set-marker unscroll-window-start (window-start))
-          (setq unscroll-hscroll (window-hscroll)))))
-
-  (defadvice scroll-up (before remember-for-unscroll activate compile)
-    "Remember where we start from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defadvice scroll-down (before remember-for-unscroll activate compile)
-    "Remember where we started from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defadvice scroll-right (before remember-for-unscroll activate compile)
-    "Remember where we started from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defadvice scroll-down (before remember-for-unscroll activate compile)
-    "Remember where we started from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defun unscroll ()
-    "Jump to location specified by 'unscroll-to'."
-    (interactive)
-    (if (not unscroll-point)
-        (error "Cannot unscroll yet"))
-    (goto-char unscroll-point)
-    (set-window-start nil unscroll-window-start)
-    (set-window-hscroll nil unscroll-hscroll))
-#+END_SRC
-* try
-#+BEGIN_SRC emacs-lisp
-(use-package try
-  :ensure t)
-#+END_SRC
-* test
-#+BEGIN_SRC emacs-lisp
-  (defun test1()
-    (interactive)
-    (message-box "hello in test1"))
-#+END_SRC
-
