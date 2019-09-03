@@ -21,7 +21,7 @@
                       	github-modern-theme
                         projectile
                         neotree
-                        magit
+                        evil-magit
                         htmlize
                         tiny
                         yasnippet
