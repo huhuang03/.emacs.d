@@ -88,7 +88,15 @@
 (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
 (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 #+END_SRC
-* The package
+** env
+#+BEGIN_SRC emacs-lisp
+(setq default-process-coding-system '(utf-8 . utf-8))
+(set-language-environment "UTF-8")
+;; 文件编码
+(prefer-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+#+END_SRC
+* Package Init
 ** org mode
 *** org-mode eval src block
  #+BEGIN_SRC emacs-lisp
@@ -144,6 +152,24 @@
  (require 'jack-mode)
  (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
  #+END_SRC
+** ace-jump
+#+BEGIN_SRC emacs-lisp
+  (autoload
+    'ace-jump-mode
+    "ace-jump-mode"
+    "Emacs quick move minor mode"
+    t)
+
+  (autoload
+    'ace-jump-char-mode
+    "ace-jump-mode"
+    "Emacs quick move minor mode"
+    t)
+
+  ;; you can select the key you prefer to
+(define-key global-map (kbd "C-c SPC") 'ace-jump-char-mode)
+(define-key evil-normal-state-map " jc" 'ace-jump-char-mode)
+#+END_SRC
 * Th
 ** f8 to execute source
 #+BEGIN_SRC emacs-lisp
@@ -212,8 +238,7 @@
               (shell-command "./a.out")))
            ((string-equal -fSuffix "go")
             (progn
-              (shell-command (concat -prog-name " build " -fname) -output-buffer)
-              (shell-command (concat -fnameNoExtension) -output-buffer)))
+              (shell-command (concat "go run " -fname))))
            ((string-equal -fSuffix "gradle") (shell-command "gradle -q build"))
            (t (if -prog-name
                   (progn
@@ -223,7 +248,7 @@
                   (message "No recognized program file suffix for this file."))))
           )
         )))
-        
+
 
   (defun is-python3-p (filepath)
     "得到FILEPATH文件中是否#python3."
@@ -270,6 +295,61 @@
  #+BEGIN_SRC emacs-lisp
     (global-set-key (kbd "C-x t") 'eshell)
  #+END_SRC
+** quick function
+#+BEGIN_SRC emacs-lisp
+(defun revert-buffer-no-confirm ()
+  "Revert buffer without confirmation."
+  (interactive) (revert-buffer t t))
+
+(global-set-key
+  (kbd "s-u")
+  (lambda (&optional force-reverting)
+    "Interactive call to revert-buffer. Ignoring the auto-save
+ file and not requesting for confirmation. When the current buffer
+ is modified, the command refuses to revert it, unless you specify
+ the optional argument: force-reverting to true."
+    (interactive "P")
+    ;;(message "force-reverting value is %s" force-reverting)
+    (if (or force-reverting (not (buffer-modified-p)))
+        (revert-buffer :ignore-auto :noconfirm)
+      (error "The buffer has been modified"))))
+
+#+END_SRC
+
+** auto indent
+#+BEGIN_SRC emacs-lisp
+(defun th-headline-auto-indent(start end len)
+  (if (and (eq len 0)
+       (th-should-handle-headline))
+      (save-excursion (th-del-space-to-asterisk))))
+
+(defun th-should-handle-headline()
+  "是否应该处理headline的缩进, 
+当*(一个多多个)不在行首的时候，
+或-不在行首
+应该处理."
+  (and
+   (eq (char-syntax (preceding-char)) ?\ )
+   (or
+    (looking-back "^\\s +\\*+\\s " nil)
+    (looking-back "^\\s +\\-+\\s " nil))))
+
+(defun th-del-space-to-asterisk()
+  "从行首开始，删除至第一个不为空格的元素."
+  (let ((left (progn
+                (beginning-of-line)
+                (point)))
+        (right (progn
+                 (beginning-of-line)
+                 (skip-syntax-forward " ")
+                 (point))))
+    (delete-region left right)))
+
+(defun th-add-headline-auto-indent-hook()
+    (add-hook 'after-change-functions 'th-headline-auto-indent t t))
+
+(add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
+#+END_SRC
 * Encrypt
 #+BEGIN_SRC emacs-lisp
 ;; org-mode 设定
@@ -319,55 +399,6 @@
           (revert-buffer :ignore-auto :noconfirm :preserve-modes)))
       ))
   )
-#+END_SRC
-* Env
-#+BEGIN_SRC emacs-lisp
-(setq default-process-coding-system '(utf-8 . utf-8))
-(set-language-environment "UTF-8")
-#+END_SRC
-* Buffer
-#+BEGIN_SRC emacs-lisp
-;; 文件编码
-(prefer-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-(defun revert-buffer-no-confirm ()
-  "Revert buffer without confirmation."
-  (interactive) (revert-buffer t t))
-
-(global-set-key
-  (kbd "s-u")
-  (lambda (&optional force-reverting)
-    "Interactive call to revert-buffer. Ignoring the auto-save
- file and not requesting for confirmation. When the current buffer
- is modified, the command refuses to revert it, unless you specify
- the optional argument: force-reverting to true."
-    (interactive "P")
-    ;;(message "force-reverting value is %s" force-reverting)
-    (if (or force-reverting (not (buffer-modified-p)))
-        (revert-buffer :ignore-auto :noconfirm)
-      (error "The buffer has been modified"))))
-
-#+END_SRC
-* Navigation
-** ace-jump
-#+BEGIN_SRC emacs-lisp
-  (autoload
-    'ace-jump-mode
-    "ace-jump-mode"
-    "Emacs quick move minor mode"
-    t)
-
-  (autoload
-    'ace-jump-char-mode
-    "ace-jump-mode"
-    "Emacs quick move minor mode"
-    t)
-
-  ;; you can select the key you prefer to
-(define-key global-map (kbd "C-c SPC") 'ace-jump-char-mode)
-(define-key evil-normal-state-map " jc" 'ace-jump-char-mode)
 #+END_SRC
 * UI
 ** try set front size
@@ -553,9 +584,6 @@ TODO
         "<SPC>p" "project operators"
         ))
   #+END_SRC
-* tiny module
-(require 'tiny)
-(tiny-setup-default)
 * move around
 ** move between windows
 #+BEGIN_SRC emacs-lisp
@@ -938,37 +966,3 @@ TODO
     (message-box "hello in test1"))
 #+END_SRC
 
-* headline auto indent when in evil+org-mode
-#+BEGIN_SRC emacs-lisp
-(defun th-headline-auto-indent(start end len)
-  (if (and (eq len 0)
-       (th-should-handle-headline))
-      (save-excursion (th-del-space-to-asterisk))))
-
-(defun th-should-handle-headline()
-  "是否应该处理headline的缩进, 
-当*(一个多多个)不在行首的时候，
-或-不在行首
-应该处理."
-  (and
-   (eq (char-syntax (preceding-char)) ?\ )
-   (or
-    (looking-back "^\\s +\\*+\\s " nil)
-    (looking-back "^\\s +\\-+\\s " nil))))
-
-(defun th-del-space-to-asterisk()
-  "从行首开始，删除至第一个不为空格的元素."
-  (let ((left (progn
-                (beginning-of-line)
-                (point)))
-        (right (progn
-                 (beginning-of-line)
-                 (skip-syntax-forward " ")
-                 (point))))
-    (delete-region left right)))
-
-(defun th-add-headline-auto-indent-hook()
-    (add-hook 'after-change-functions 'th-headline-auto-indent t t))
-
-(add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
-#+END_SRC
