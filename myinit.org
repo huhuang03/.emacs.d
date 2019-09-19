@@ -218,6 +218,7 @@
 #+END_SRC
 
 ** flycheck
+*** enable flycheck
 #+BEGIN_SRC emacs-lisp
 (global-flycheck-mode)
 #+END_SRC
@@ -225,7 +226,8 @@
 #+BEGIN_SRC emacs-lisp
   (defun th-c-mode-common-hook ()
     (setq flycheck-clang-include-path (list "/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7"
-                                            "/Users/th/source/libs/c/vector")))
+                                            "/Users/th/source/libs/c/vector"
+                                            "/usr/local/BerkeleyDB.4.4/include")))
   (add-hook 'c-mode-common-hook 'th-c-mode-common-hook)
 #+END_SRC
 *** flycheck support c++11
