@@ -12,7 +12,7 @@
                        yaml-mode
                        lua-mode
                        go-mode
-                       nand2tetris
+                       ;; nand2tetris
                        web-mode
                        cmake-mode
                        markdown-mode))
@@ -134,9 +134,9 @@
 ** nand2tetris
 *** hdl
  #+BEGIN_SRC emacs-lisp
-   (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
- ;;  (require 'nand2tetris)
-   (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode))
+   (if (file-exists-p "/Users/th/source/clone/nand2tetris")
+     (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
+     (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode)))
  #+END_SRC
 *** jack
  #+BEGIN_SRC emacs-lisp
@@ -281,6 +281,9 @@
           (message "not found %s" line)))
       rst))
 #+END_SRC
+** c-w to start eshell mode
+ #+BEGIN_SRC emacs-lisp
+    (global-set-key (kbd "C-x t") 'eshell)
 * Encrypt
 #+BEGIN_SRC emacs-lisp
 ;; org-mode 设定
