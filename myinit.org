@@ -12,7 +12,6 @@
                        yaml-mode
                        lua-mode
                        go-mode
-                       nand2tetris
                        web-mode
                        cmake-mode
                        markdown-mode))
@@ -139,19 +138,6 @@
 ** cmake mode
  #+BEGIN_SRC emacs-lisp
  (require 'cmake-mode)
- #+END_SRC
-** nand2tetris
-*** hdl
- #+BEGIN_SRC emacs-lisp
-   (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
- ;;  (require 'nand2tetris)
-   (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode))
- #+END_SRC
-*** jack
- #+BEGIN_SRC emacs-lisp
- (add-to-list 'load-path "~/.emacs.d/lisp/")
- (require 'jack-mode)
- (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
  #+END_SRC
 ** ace-jump
 #+BEGIN_SRC emacs-lisp
