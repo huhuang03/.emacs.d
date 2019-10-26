@@ -244,6 +244,7 @@
            `(
              ("c" . "gcc")
              ("gradle" . "gradle")
+             ("php" . "php")
              ("py" . "python")
              ("sh". "sh")
              ("lua". "lua")
