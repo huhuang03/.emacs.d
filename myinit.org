@@ -19,6 +19,7 @@
 (setq th-common_pkg '(
                       	github-modern-theme
                         projectile
+                        json-mode
                         neotree
                         evil-magit
                         htmlize
@@ -228,6 +229,12 @@
   (global-set-key (kbd "S-<f2>") 'flycheck-previous-error)
 #+END_SRC
 
+** json-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'json-mode-hook (lambda ()
+                              (make-local-variable 'js-indent-line)
+                              (setq js-indent-line 2)))
+#+END_SRC
 * th
 ** f8 to execute source
 #+BEGIN_SRC emacs-lisp
