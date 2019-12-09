@@ -254,6 +254,7 @@
              ("php" . "php")
              ("py" . "python")
              ("sh". "sh")
+             ("dart". "dart")
              ("lua". "lua")
              ("rb". "ruby")
              ("cpp" . "g++ --std=c++11")
