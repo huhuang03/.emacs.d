@@ -600,7 +600,7 @@ TODO
   (define-key evil-normal-state-map " fc" 'th-open-config-file)
   (define-key evil-normal-state-map " fpp" 'th-open-pass-file)
   (define-key evil-normal-state-map " fpo" (th-lambda-open-file "~/source/password/password_no_password.org"))
-  (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io/posts/")))
+  (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/")))
   (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org")))
   (define-key evil-normal-state-map " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt")))
   (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file "~/source/org/note.org")))
