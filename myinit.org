@@ -205,8 +205,12 @@
 #+END_SRC
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
-(require 'yasnippet)
-(yas-global-mode)
+  (use-package yasnippet
+    :ensure t
+    :config
+    (use-package yasnippet-snippets
+      :ensure t)
+    (yas-reload-all))
 #+END_SRC
 
 ** flycheck
