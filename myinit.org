@@ -53,12 +53,6 @@
 
 (th-install-packages)
 #+END_SRC
-** fix path
-#+BEGIN_SRC emacs-lisp
-;; copy path
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-#+END_SRC
 ** enable evil
 #+BEGIN_SRC emacs-lisp
 (use-package evil
@@ -66,29 +60,11 @@
     :config
     (evil-mode 1))
 #+END_SRC
-** which-key
+** fix path
 #+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
-(setq general-default-keymaps 'evil-normal-state-map)
-#+END_SRC
-** neotree
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "s-1") 'neotree-toggle)
-#+END_SRC
-*** config with evil
-#+BEGIN_SRC emacs-lisp
-(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+;; copy path
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 #+END_SRC
 ** env
 #+BEGIN_SRC emacs-lisp
@@ -101,7 +77,9 @@
 * package Init
 ** avy
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-:") 'avy-goto-char)
+(use-package avy
+  :ensure t
+  :bind (("C-;" . avy-goto-char)))
 #+END_SRC
 ** org mode
 *** org-mode eval src block
@@ -243,6 +221,30 @@
   (add-hook 'json-mode-hook (lambda ()
                               (make-local-variable 'js-indent-line)
                               (setq js-indent-line 2)))
+#+END_SRC
+** which-key
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+(setq general-default-keymaps 'evil-normal-state-map)
+#+END_SRC
+** neotree
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "s-1") 'neotree-toggle)
+#+END_SRC
+*** config with evil
+#+BEGIN_SRC emacs-lisp
+(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 #+END_SRC
 * th
 ** reload config file
@@ -854,10 +856,6 @@ TODO
 (setq indo-everywhere t)
 (ido-mode 1)
 
-;; avy
-(use-package avy
-  :ensure t
-  :bind (("C-;" . avy-goto-char)))
 
 
 
