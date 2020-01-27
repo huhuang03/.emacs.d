@@ -912,3 +912,27 @@ TODO
 ;; config not tab
 (setq-default indent-tabs-mode nil)
 #+END_SRC
+* try
+#+BEGIN_SRC emacs-lisp
+  ;; (defun create-frame-font-mac()
+  ;;   (interactive)
+  ;;   ;; English
+  ;;   (set-face-attribute
+  ;;    'default nil :font "Menlo 14")
+  ;;   (dolist (charset '( han symbol cjk-misc bopomofo))
+  ;;                                         ; Chinese
+  ;;     (set-fontset-font (frame-parameter nil 'font)
+  ;;                       charset
+  ;;                       (font-spec :family "STHeiti" :size 16)))
+  ;;   ;; Japanese
+  ;;   (set-fontset-font (frame-parameter nil 'font)
+  ;;   ;; 'kana
+  ;;   (font-spec :family "Hiragino Sans" :size 16))
+  ;;   ;; Korean
+  ;;   (set-fontset-font (frame-parameter nil 'font)
+  ;;   ;; 'hangul
+  ;;   (font-spec :family "Apple SD Gothic Neo" :size 18))
+  ;;   )
+
+  ;; (create-frame-font-mac)
+#+END_SRC
