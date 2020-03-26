@@ -188,7 +188,9 @@
     :config
     (use-package yasnippet-snippets
       :ensure t)
-    (yas-reload-all))
+    (yas-reload-all)
+    (add-hook 'prog-mode-hook #'yas-minor-mode)
+)
 #+END_SRC
 
 ** flycheck
