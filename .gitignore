@@ -5,6 +5,8 @@ myinit.el
 projectile-bookmarks.eld
 recentf
 auto-save-list/
+projectile.cache
 eshell/
 tramp
+*~
 transient/

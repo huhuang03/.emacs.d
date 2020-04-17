@@ -123,6 +123,34 @@
  #+BEGIN_SRC emacs-lisp
  (require 'cmake-mode)
  #+END_SRC
+** nand2tetris
+*** hdl
+ #+BEGIN_SRC emacs-lisp
+   (if (file-exists-p "/Users/th/source/clone/nand2tetris")
+     (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
+     (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode)))
+ #+END_SRC
+*** jack
+ #+BEGIN_SRC emacs-lisp
+ (add-to-list 'load-path "~/.emacs.d/lisp/")
+ (require 'jack-mode)
+ (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
+ #+END_SRC
+* Th
+** setup the source folder
+#+BEGIN_SRC emacs-lisp
+(setq th_src-folder "~/source/")
+
+(defun th_is-windowsp ()
+    (string-equal system-type "windows-nt"))
+
+(if (th_is-windowsp)
+    (setq th_src-folder "D:/s/"))
+
+(defun th_folder-to-src (folder)
+  (concat th_src-folder folder))
+#+END_SRC
+** the abbr
 ** ace-jump
 #+BEGIN_SRC emacs-lisp
   (autoload
@@ -381,6 +409,7 @@
 ** c-w to start eshell mode
  #+BEGIN_SRC emacs-lisp
     (global-set-key (kbd "C-x t") 'eshell)
+* Encrypt
  #+END_SRC
 ** quick function
 #+BEGIN_SRC emacs-lisp
@@ -519,7 +548,7 @@
 
     (defun th-open-pass-file ()
       (interactive)
-      (find-file "~/source/password/password.org.gpg"))
+      (find-file (th_folder-to-src "password/password.org.gpg")))
 
     (defun th-sudo-edit (&optional arg)
       (interactive "P")
@@ -580,7 +609,7 @@
     "New a post or draft by FOLDER, and the name is POST-NAME."
     (let* ((time (format-time-string "%Y-%m-%d"))
            (slug (replace-regexp-in-string " +" "-" post-name))
-          (post-path (concat "~/source/huhuang03.github.io/"
+          (post-path (concat (th_folder-to-src "huhuang03.github.io/")
                                   folder "/" slug ".org")))
       (message post-path)
       (if (file-exists-p post-path)
@@ -622,8 +651,11 @@ TODO
   (define-key evil-normal-state-map " fpo" (th-lambda-open-file "~/source/password/password_no_password.org"))
   (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/")))
   (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org")))
+  (define-key evil-normal-state-map " fpo" (th-lambda-open-file (th_folder-to-src "password/password_no_password.org")))
+  (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir (th_folder-to-src "huhuang03.github.io/posts/"))))
+  (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file (th_folder-to-src "password/password_no_password.org"))))
   (define-key evil-normal-state-map " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt")))
-  (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file "~/source/org/note.org")))
+  (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file (th_folder-to-src "org/note.org"))))
 #+END_SRC
 ** which key
   Brings up some help
@@ -914,27 +946,142 @@ TODO
 ;; config not tab
 (setq-default indent-tabs-mode nil)
 #+END_SRC
+* Company
+#+BEGIN_SRC  emacs-lisp
+;; config company
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
+
+
+;; custom org mode
+;; C-c [ to add file to agenda-files
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+
+
+;; turn on recentf files feature
+(recentf-mode 1)
+
+;; auto follow link
+(setq vc-follow-symlinks 1)
+
+(when (display-graphic-p)
+    (scroll-bar-mode -1))
+
+(global-linum-mode 1) ; alway shwo line numbers
+(setq make-backup-files nil) ; stop creating backup~ files
+(setq auto-save-default nil) ; stop creating #autosave# files
+(electric-pair-mode t)
+
+
+
+;; add make file to makefile-mode
+(add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
+
+;; keys
+(defun th-open-org-file ()
+  "Open org file"
+  (interactive)
+  (find-file (th_folder-to-src "org/gtd.org")))
+#+END_SRC
+* debug
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\M-?" 'help-command)
+#+END_SRC
+** undo scrool up n times
+#+BEGIN_SRC emacs-lisp
+  (defvar unscroll-point (make-marker)
+    "Cursor position for next call to 'unscroll'.")
+
+  (defvar unscroll-window-start (make-marker)
+    "Window start for next cal to 'unscroll'.")
+
+  (defvar unscroll-hscroll nil
+    "Hscroll for next call to 'unscroll'.")
+
+  (put 'scroll-up 'unscrollable t)
+  (put 'scroll-down 'unscrollable t)
+  (put 'scroll-left 'unscrollable t)
+  (put 'scroll-right 'unscrollable t)
+
+  (defun unscroll-maybe-remember ()
+    "Common function for 'unscroll'."
+    (if (not (get last-command 'unscrollable))
+        (progn
+          (set-marker unscroll-point (point))
+          (set-marker unscroll-window-start (window-start))
+          (setq unscroll-hscroll (window-hscroll)))))
+
+  (defadvice scroll-up (before remember-for-unscroll activate compile)
+    "Remember where we start from, for 'unscroll'."
+    (unscroll-maybe-remember))
+
+  (defadvice scroll-down (before remember-for-unscroll activate compile)
+    "Remember where we started from, for 'unscroll'."
+    (unscroll-maybe-remember))
+
+  (defadvice scroll-right (before remember-for-unscroll activate compile)
+    "Remember where we started from, for 'unscroll'."
+    (unscroll-maybe-remember))
+
+  (defadvice scroll-down (before remember-for-unscroll activate compile)
+    "Remember where we started from, for 'unscroll'."
+    (unscroll-maybe-remember))
+
+  (defun unscroll ()
+    "Jump to location specified by 'unscroll-to'."
+    (interactive)
+    (if (not unscroll-point)
+        (error "Cannot unscroll yet"))
+    (goto-char unscroll-point)
+    (set-window-start nil unscroll-window-start)
+    (set-window-hscroll nil unscroll-hscroll))
+#+END_SRC
 * try
 #+BEGIN_SRC emacs-lisp
-  ;; (defun create-frame-font-mac()
-  ;;   (interactive)
-  ;;   ;; English
-  ;;   (set-face-attribute
-  ;;    'default nil :font "Menlo 14")
-  ;;   (dolist (charset '( han symbol cjk-misc bopomofo))
-  ;;                                         ; Chinese
-  ;;     (set-fontset-font (frame-parameter nil 'font)
-  ;;                       charset
-  ;;                       (font-spec :family "STHeiti" :size 16)))
-  ;;   ;; Japanese
-  ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;   ;; 'kana
-  ;;   (font-spec :family "Hiragino Sans" :size 16))
-  ;;   ;; Korean
-  ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;   ;; 'hangul
-  ;;   (font-spec :family "Apple SD Gothic Neo" :size 18))
-  ;;   )
+(use-package try
+  :ensure t)
+#+END_SRC
+* test
+#+BEGIN_SRC emacs-lisp
+  (defun test1()
+    (interactive)
+    (message-box "hello in test1"))
+#+END_SRC
 
-  ;; (create-frame-font-mac)
+* headline auto indent when in evil+org-mode
+#+BEGIN_SRC emacs-lisp
+(defun th-headline-auto-indent(start end len)
+  (if (and (eq len 0)
+       (th-should-handle-headline))
+      (save-excursion (th-del-space-to-asterisk))))
+
+(defun th-should-handle-headline()
+  "是否应该处理headline的缩进, 
+当*(一个多多个)不在行首的时候，
+或-不在行首
+应该处理."
+  (and
+   (eq (char-syntax (preceding-char)) ?\ )
+   (or
+    (looking-back "^\\s +\\*+\\s " nil)
+    (looking-back "^\\s +\\-+\\s " nil))))
+
+(defun th-del-space-to-asterisk()
+  "从行首开始，删除至第一个不为空格的元素."
+  (let ((left (progn
+                (beginning-of-line)
+                (point)))
+        (right (progn
+                 (beginning-of-line)
+                 (skip-syntax-forward " ")
+                 (point))))
+    (delete-region left right)))
+
+(defun th-add-headline-auto-indent-hook()
+    (add-hook 'after-change-functions 'th-headline-auto-indent t t))
+
+(add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
 #+END_SRC
