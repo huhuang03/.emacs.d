@@ -406,9 +406,10 @@
           (message "not found %s" line)))
       rst))
 #+END_SRC
-** c-w to start eshell mode
- #+BEGIN_SRC emacs-lisp
-    (global-set-key (kbd "C-x t") 'eshell)
+** set the startup page
+#+BEGIN_SRC emacs-lisp
+(setq initial-buffer-choice "~/source/org/gtd.org")
+#+END_SRC
 * Encrypt
  #+END_SRC
 ** quick function
@@ -466,7 +467,7 @@
 
 (add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
 #+END_SRC
-* encrypt
+** encrypt
 #+BEGIN_SRC emacs-lisp
 ;; org-mode 设定
 (require 'org-crypt)
