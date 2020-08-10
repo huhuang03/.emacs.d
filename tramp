@@ -1,6 +1,6 @@
-;; -*- emacs-lisp -*- <19/06/04 17:28:48 /Users/th/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <20/08/07 10:54:37 /Users/th/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
-(((tramp-file-name "sudo" "root" nil "localhost" nil nil nil)
+(((tramp-file-name "ssh" "pi" nil "172.16.23.36" nil nil nil)
   nil))
