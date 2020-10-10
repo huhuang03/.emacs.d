@@ -610,8 +610,8 @@
     "New a post or draft by FOLDER, and the name is POST-NAME."
     (let* ((time (format-time-string "%Y-%m-%d"))
            (slug (replace-regexp-in-string " +" "-" post-name))
-          (post-path (concat (th_folder-to-src "huhuang03.github.io/")
-                                  folder "/" slug ".org")))
+          (post-path (concat (th_folder-to-src "posts")
+                                  "/" slug ".org")))
       (message post-path)
       (if (file-exists-p post-path)
         (progn
