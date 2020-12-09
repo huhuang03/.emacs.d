@@ -13,6 +13,7 @@
                        lua-mode
                        go-mode
                        web-mode
+                       dart-mode
                        cmake-mode
                        markdown-mode))
 
