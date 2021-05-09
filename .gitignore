@@ -10,3 +10,5 @@ eshell/
 tramp
 *~
 transient/
+
+url/cache/

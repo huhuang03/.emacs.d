@@ -99,7 +99,7 @@
      (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
      (set-face-attribute 'org-date nil :inherit 'fixed-pitch)
      )
-   (add-hook 'org-mode-hook 'th_set-buffer-variable-pitch)
+   ;; (add-hook 'org-mode-hook 'th_set-buffer-variable-pitch)
  #+END_SRC
 *** toggle link display
  #+BEGIN_SRC emacs-lisp
@@ -137,6 +137,8 @@
  (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
  #+END_SRC
 * Th
+** window
+*** half window width and make 
 ** setup the source folder
 #+BEGIN_SRC emacs-lisp
 (setq th_src-folder "~/source/")
@@ -145,7 +147,7 @@
     (string-equal system-type "windows-nt"))
 
 (if (th_is-windowsp)
-    (setq th_src-folder "D:/s/"))
+    (setq th_src-folder "E:/source/"))
 
 (defun th_folder-to-src (folder)
   (concat th_src-folder folder))
@@ -276,7 +278,6 @@
 (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
 (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 #+END_SRC
-* th
 ** reload config file
  #+BEGIN_SRC emacs-lisp
    (defun th_config-reload()
