@@ -13,6 +13,7 @@
                        lua-mode
                        go-mode
                        web-mode
+                       dart-mode
                        cmake-mode
                        markdown-mode))
 
@@ -73,6 +74,10 @@
 ;; 文件编码
 (prefer-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (server-start)
 #+END_SRC
 * package Init
 ** avy
@@ -407,9 +412,10 @@
           (message "not found %s" line)))
       rst))
 #+END_SRC
-** c-w to start eshell mode
- #+BEGIN_SRC emacs-lisp
-    (global-set-key (kbd "C-x t") 'eshell)
+** set the startup page
+#+BEGIN_SRC emacs-lisp
+(setq initial-buffer-choice "~/source/org/gtd.org")
+#+END_SRC
 * Encrypt
  #+END_SRC
 ** quick function
@@ -467,7 +473,7 @@
 
 (add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
 #+END_SRC
-* encrypt
+** encrypt
 #+BEGIN_SRC emacs-lisp
 ;; org-mode 设定
 (require 'org-crypt)
@@ -610,8 +616,8 @@
     "New a post or draft by FOLDER, and the name is POST-NAME."
     (let* ((time (format-time-string "%Y-%m-%d"))
            (slug (replace-regexp-in-string " +" "-" post-name))
-          (post-path (concat (th_folder-to-src "huhuang03.github.io/")
-                                  folder "/" slug ".org")))
+          (post-path (concat (th_folder-to-src "posts")
+                                  "/" slug ".org")))
       (message post-path)
       (if (file-exists-p post-path)
         (progn
