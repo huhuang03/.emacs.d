@@ -21,8 +21,6 @@
                         avy
                         projectile
                         json-mode
-                        neotree
-                        evil-magit
                         htmlize
                         tiny
                         yasnippet
@@ -141,20 +139,23 @@
  (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
  #+END_SRC
 * Th
-** window
-*** half window width and make 
+** default global variable
+#+BEGIN_SRC emacs-lisp
+(setq th-src-folder "~/source/")
+#+END_SRC
+** load the local.el
+#+BEGIN_SRC emacs-lisp  
+(let ((local-path "~/.emacs.d/local.el"))
+    (if (file-exists-p local-path)
+      (load-file local-path)
+    (message "not exist")))
+#+END_SRC
 ** setup the source folder
 #+BEGIN_SRC emacs-lisp
-(setq th_src-folder "~/source/")
-
-(defun th_is-windowsp ()
-    (string-equal system-type "windows-nt"))
-
-(if (th_is-windowsp)
-    (setq th_src-folder "E:/source/"))
-
-(defun th_folder-to-src (folder)
-  (concat th_src-folder folder))
+    (defun th-folder-to-src (folder)
+      (interactive)
+      (concat th-src-folder folder))
+  (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
 #+END_SRC
 ** the abbr
 ** ace-jump
@@ -213,7 +214,7 @@
 (defun th-open-org-file ()
   "Open org file"
   (interactive)
-  (find-file "~/source/org/gtd.org"))
+  (find-file th-path-gtd-file))
 #+END_SRC
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
@@ -413,7 +414,7 @@
 #+END_SRC
 ** set the startup page
 #+BEGIN_SRC emacs-lisp
-(setq initial-buffer-choice "~/source/org/gtd.org")
+(setq initial-buffer-choice th-path-gtd-file)
 #+END_SRC
 * Encrypt
  #+END_SRC
@@ -554,7 +555,7 @@
 
     (defun th-open-pass-file ()
       (interactive)
-      (find-file (th_folder-to-src "password/password.org.gpg")))
+      (find-file (th-folder-to-src "password/password.org.gpg")))
 
     (defun th-sudo-edit (&optional arg)
       (interactive "P")
@@ -615,7 +616,7 @@
     "New a post or draft by FOLDER, and the name is POST-NAME."
     (let* ((time (format-time-string "%Y-%m-%d"))
            (slug (replace-regexp-in-string " +" "-" post-name))
-          (post-path (concat (th_folder-to-src "posts")
+          (post-path (concat (th-folder-to-src "posts")
                                   "/" slug ".org")))
       (message post-path)
       (if (file-exists-p post-path)
@@ -657,11 +658,11 @@ TODO
   (define-key evil-normal-state-map " fpo" (th-lambda-open-file "~/source/password/password_no_password.org"))
   (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/")))
   (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org")))
-  (define-key evil-normal-state-map " fpo" (th-lambda-open-file (th_folder-to-src "password/password_no_password.org")))
-  (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir (th_folder-to-src "huhuang03.github.io/posts/"))))
-  (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file (th_folder-to-src "password/password_no_password.org"))))
+  (define-key evil-normal-state-map " fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org")))
+  (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/"))))
+  (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org"))))
   (define-key evil-normal-state-map " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt")))
-  (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file (th_folder-to-src "org/note.org"))))
+  (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org"))))
 #+END_SRC
 ** which key
   Brings up some help
@@ -985,12 +986,6 @@ TODO
 
 ;; add make file to makefile-mode
 (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
-
-;; keys
-(defun th-open-org-file ()
-  "Open org file"
-  (interactive)
-  (find-file (th_folder-to-src "org/gtd.org")))
 #+END_SRC
 * debug
 #+BEGIN_SRC emacs-lisp

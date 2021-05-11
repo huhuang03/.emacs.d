@@ -12,3 +12,6 @@ tramp
 transient/
 
 url/cache/
+local.el
+.*
+server/

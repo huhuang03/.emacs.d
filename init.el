@@ -28,13 +28,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(doc-view-ghostscript-options
-   (quote
-    ("-dNOSAFER" "-dNOPAUSE" "-sDEVICE=png16m" "-dTextAlphaBits=4" "-dBATCH" "-dGraphicsAlphaBits=4" "-dQUIET")))
+   '("-dNOSAFER" "-dNOPAUSE" "-sDEVICE=png16m" "-dTextAlphaBits=4" "-dBATCH" "-dGraphicsAlphaBits=4" "-dQUIET"))
  '(doc-view-ghostscript-program "/usr/local/bin/gs")
- '(org-agenda-files (quote ("~/source/org/gtd.org")))
+ '(org-agenda-files '("~/source/org/gtd.org"))
  '(package-selected-packages
-   (quote
-    (yasnippet-snippets groovy-mode csharp-mode yaml-mode lua-mode go-mode web-mode cmake-mode markdown-mode github-modern-theme projectile json-mode neotree evil-magit htmlize tiny yasnippet flycheck ace-jump-mode evil monokai-theme key-chord general exec-path-from-shell evil-surround auto-complete auto-complete-c-headers company all-the-icons))))
+   '(yasnippet-snippets groovy-mode csharp-mode yaml-mode lua-mode go-mode web-mode cmake-mode markdown-mode github-modern-theme projectile json-mode neotree evil-magit htmlize tiny yasnippet flycheck ace-jump-mode evil monokai-theme key-chord general exec-path-from-shell evil-surround auto-complete auto-complete-c-headers company all-the-icons)))
  '(safe-local-variable-values
    (quote
     ((flycheck-clang-include-path quote
