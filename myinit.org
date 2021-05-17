@@ -19,23 +19,17 @@
 (setq th-common_pkg '(
                       	github-modern-theme
                         avy
-                        projectile
                         json-mode
                         htmlize
                         tiny
                         yasnippet
                         flycheck
-                        ace-jump-mode
-                        evil
                         monokai-theme
-                        key-chord
-                        general
                         exec-path-from-shell
                         evil-surround
                         auto-complete
                         auto-complete-c-headers
                         company
-                        all-the-icons
                         ))
 
 (defvar th-packages (append th-lang_mode th-common_pkg))
@@ -48,15 +42,7 @@
 	  (package-install pkg)
 	  )
       )))
-
 (th-install-packages)
-#+END_SRC
-** enable evil
-#+BEGIN_SRC emacs-lisp
-(use-package evil
-:ensure t
-    :config
-    (evil-mode 1))
 #+END_SRC
 ** fix path
 #+BEGIN_SRC emacs-lisp
@@ -76,73 +62,201 @@
 #+BEGIN_SRC emacs-lisp
   (server-start)
 #+END_SRC
+
+* initial packages
+** How to startup start speed?
+   
+~emacs-init-time~ show the startup time, for now is: 8.3
+
+The key is use ~use-package~
+
+And the options it provided:
+- :hook
+- :bind
+- :commands
+- :after
+- :defer If you don't use other options, this one will defer loading unti after startup.
+#+BEGIN_SRC 
+(setq use-pacakge-verbose t)
+(require 'use-package-ensure)
+(setq use-pacakge-always-ensure t)
+#+END_SRC
+** evil
+ #+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :defer
+    :config
+    (evil-mode 1)
+    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+    (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+    (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+    (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+    (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+    (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+
+  )
+
+#+END_SRC
+
+** projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :after 'evil
+    :commands projectile-mode
+    :config
+    (projectile-mode +1)
+    (define-key evil-normal-state-map " p" 'projectile-command-map))
+#+END_SRC
+
+** which key
+ Brings up some help
+ #+BEGIN_SRC emacs-lisp
+   (use-package which-key
+     :after evil
+     :after gernal
+     :config
+     (which-key-mode)
+     (setq general-default-keymaps 'evil-normal-state-map)
+     (general-define-key :prefix "<SPC>"
+                         "abn" 'th-posts-new-post
+                         "abd" 'th-posts-new-draft
+
+                         "g" 'magit-status
+
+                         "fd" (lambda () (interactive) (dired "."))
+                         "fr" 'th-sudo-edit
+
+                         "hf" 'describe-function
+
+                         "bb" 'helm-buffers-list
+                         "bk" 'kill-this-buffer
+
+                         "<SPC>" 'helm-M-x
+                         )
+     (which-key-add-key-based-replacements
+       "<SPC>a" "application"
+       "<SPC>b" "buffer operator"
+       "<SPC>f" "file operator"
+       "<SPC>g" "git oprator"
+       "<SPC>r" "window or frame"
+       "<SPC>h" "help"
+
+       "<SPC>ab" "blog"
+       "<SPC>abn" "new blog"
+
+       "<SPC>fd" "open dot file"
+       "<SPC>fo" "open org file"
+       "<SPC>fpo" "pwd file without pwd"
+
+       "<SPC> bb" "switch buffer"
+       "<SPC> bk" "kill buffer"
+       "<SPC><SPC>" "helm-M-x"
+
+       "<SPC>p" "project operators"
+       ))
+ #+END_SRC
+** key-chord
+#+BEGIN_SRC emacs-lisp
+  ;; config evil
+  (use-package key-chord
+    :defer
+    :after evil
+    :config
+    (key-chord-mode 1)
+
+    (setq key-chord-two-keys-delay 0.5)
+    (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
+
+#+END_SRC
+** general
+#+BEGIN_SRC emacs-lisp
+    ;; fullscreen or maximized frame
+    ;; Ok we need one thing to active genral
+    (require 'general)
+  (use-package general
+    :defer
+    :after evil
+    :config
+    (message "general used")
+    (general-define-key
+     :keymaps 'evil-normal-state-map
+     :prefix "<SPC>"
+     "wf" 'toggle-frame-fullscreen
+     "wm" 'toggle-frame-maximized
+     " ft" 'th-open-org-file
+     " fc" 'th-open-config-file
+     " fpp" 'th-open-pass-file
+     " fpo" (th-lambda-open-file "~/source/password/password_no_password.org")
+     " fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
+     " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
+     " fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
+     " fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/")))
+     " fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
+     " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
+     " fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
+     ))
+#+END_SRC
 * package Init
 ** avy
 #+BEGIN_SRC emacs-lisp
 (use-package avy
-  :ensure t
-  :bind (("C-;" . avy-goto-char)))
+:ensure t
+:bind (("C-;" . avy-goto-char)))
 #+END_SRC
 ** org mode
 *** org-mode eval src block
- #+BEGIN_SRC emacs-lisp
-   (with-eval-after-load 'org
-     (org-babel-do-load-languages 'org-babel-load-languages '((ruby . t))))
- #+END_SRC
-*** org-mode chinese table
- #+BEGIN_SRC emacs-lisp
-   (defun th_set-buffer-variable-pitch ()
-     (interactive)
-     (variable-pitch-mode t)
-     (setq line-spacing 3)
-     (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-     (set-face-attribute 'org-link nil :inherit 'fixed-pitch)
-     (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-     (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
-     (set-face-attribute 'org-date nil :inherit 'fixed-pitch)
-     )
-   ;; (add-hook 'org-mode-hook 'th_set-buffer-variable-pitch)
- #+END_SRC
-*** toggle link display
- #+BEGIN_SRC emacs-lisp
- (defun org-toggle-link-display ()
-   "Toggle the literal or descriptive display of links."
-   (interactive)
-   (if org-descriptive-links
-       (progn (org-remove-from-invisibility-spec '(org-link))
-          (org-restart-font-lock)
-          (setq org-descriptive-links nil))
-     (progn (add-to-invisibility-spec '(org-link))
-        (org-restart-font-lock)
-        (setq org-descriptive-links t))))
- #+END_SRC
-** projectile
 #+BEGIN_SRC emacs-lisp
-  (projectile-mode +1)
-  (define-key evil-normal-state-map " p" 'projectile-command-map)
+(with-eval-after-load 'org
+    (org-babel-do-load-languages 'org-babel-load-languages '((ruby . t))))
+#+END_SRC
+*** org-mode chinese table
+#+BEGIN_SRC emacs-lisp
+(defun th_set-buffer-variable-pitch ()
+    (interactive)
+    (variable-pitch-mode t)
+    (setq line-spacing 3)
+    (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-link nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-date nil :inherit 'fixed-pitch)
+    )
+;; (add-hook 'org-mode-hook 'th_set-buffer-variable-pitch)
+#+END_SRC
+*** toggle link display
+#+BEGIN_SRC emacs-lisp
+(defun org-toggle-link-display ()
+"Toggle the literal or descriptive display of links."
+(interactive)
+(if org-descriptive-links
+    (progn (org-remove-from-invisibility-spec '(org-link))
+        (org-restart-font-lock)
+        (setq org-descriptive-links nil))
+    (progn (add-to-invisibility-spec '(org-link))
+    (org-restart-font-lock)
+    (setq org-descriptive-links t))))
 #+END_SRC
 ** cmake mode
- #+BEGIN_SRC emacs-lisp
- (require 'cmake-mode)
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(require 'cmake-mode)
+#+END_SRC
 ** nand2tetris
 *** hdl
- #+BEGIN_SRC emacs-lisp
-   (if (file-exists-p "/Users/th/source/clone/nand2tetris")
-     (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
-     (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode)))
- #+END_SRC
-*** jack
- #+BEGIN_SRC emacs-lisp
- (add-to-list 'load-path "~/.emacs.d/lisp/")
- (require 'jack-mode)
- (add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
- #+END_SRC
-* Th
-** default global variable
 #+BEGIN_SRC emacs-lisp
-(setq th-src-folder "~/source/")
+(if (file-exists-p "/Users/th/source/clone/nand2tetris")
+    (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
+    (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode)))
 #+END_SRC
+*** jack
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(require 'jack-mode)
+(add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
+#+END_SRC
+* Th
 ** load the local.el
 #+BEGIN_SRC emacs-lisp  
 (let ((local-path "~/.emacs.d/local.el"))
@@ -150,31 +264,22 @@
       (load-file local-path)
     (message "not exist")))
 #+END_SRC
+** default global variable
+#+BEGIN_SRC emacs-lisp
+  (if (not (boundp 'th-src-folder))
+      (setq th-src-folder "~/source/"))
+
+#+END_SRC
+** posts
+#+BEGIN_SRC emacs-lisp
+(require 'th-posts-mode)
+#+END_SRC
 ** setup the source folder
 #+BEGIN_SRC emacs-lisp
-    (defun th-folder-to-src (folder)
-      (interactive)
-      (concat th-src-folder folder))
-  (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
-#+END_SRC
-** the abbr
-** ace-jump
-#+BEGIN_SRC emacs-lisp
-  (autoload
-    'ace-jump-mode
-    "ace-jump-mode"
-    "Emacs quick move minor mode"
-    t)
-
-  (autoload
-    'ace-jump-char-mode
-    "ace-jump-mode"
-    "Emacs quick move minor mode"
-    t)
-
-  ;; you can select the key you prefer to
-(define-key global-map (kbd "C-c SPC") 'ace-jump-char-mode)
-(define-key evil-normal-state-map " jc" 'ace-jump-char-mode)
+(defun th-folder-to-src (folder)
+    (interactive)
+    (concat th-src-folder folder))
+(setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
 #+END_SRC
 ** Company
 #+BEGIN_SRC  emacs-lisp
@@ -259,29 +364,12 @@
                               (make-local-variable 'js-indent-line)
                               (setq js-indent-line 2)))
 #+END_SRC
-** which-key
-#+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
-(setq general-default-keymaps 'evil-normal-state-map)
-#+END_SRC
 ** neotree
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "s-1") 'neotree-toggle)
 #+END_SRC
 *** config with evil
 #+BEGIN_SRC emacs-lisp
-(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 #+END_SRC
 ** reload config file
  #+BEGIN_SRC emacs-lisp
@@ -538,13 +626,6 @@
 # (require 'monokai-theme)
 # (load-theme 'monokai t)
 #+END_SRC
-* frame and window
-#+BEGIN_SRC emacs-lisp
-;; fullscreen or maximized frame
-(general-define-key :prefix "<SPC>"
-                    "wf" 'toggle-frame-fullscreen
-                    "wm" 'toggle-frame-maximized)
-#+END_SRC
 
 * my self function
   #+BEGIN_SRC emacs-lisp
@@ -600,47 +681,6 @@
         (format-time-string "%z"))))
 
 #+END_SRC
-* blog
-#+BEGIN_SRC emacs-lisp
-;; 新建博客
-  (defun th-new-post (post-name)
-    (interactive "s请输入博客文件名称：")
-    (th-new-post-or-draft post-name "posts"))
-
-  ;; 新建草稿
-  (defun th-new-draft (post-name)
-    (interactive "s请输入草稿文件名称：")
-    (th-new-post-or-draft post-name "drafts"))
-
-  (defun th-new-post-or-draft (post-name folder)
-    "New a post or draft by FOLDER, and the name is POST-NAME."
-    (let* ((time (format-time-string "%Y-%m-%d"))
-           (slug (replace-regexp-in-string " +" "-" post-name))
-          (post-path (concat (th-folder-to-src "posts")
-                                  "/" slug ".org")))
-      (message post-path)
-      (if (file-exists-p post-path)
-        (progn
-      (message "博客已经存在了")
-      (find-file post-path))
-      (progn
-        (setq to-write (format "#+BEGIN_COMMENT\n.. title: %s\n.. slug: %s\n.. date: %s\n.. tags:
-.. category:
-.. link:
-.. description:
-.. type: text
-#+END_COMMENT
-
-TODO
-"
-          post-name
-          slug
-          time))
-        (write-region to-write nil post-path)
-        (find-file post-path)
-        (end-of-line 1000)))
-      ))
-#+END_SRC
 * key binding
 ** format code
 #+BEGIN_SRC emacs-lisp
@@ -652,64 +692,7 @@ TODO
     `(lambda ()
       (interactive)
       (find-file ,path)))
-  (define-key evil-normal-state-map " ft" 'th-open-org-file)
-  (define-key evil-normal-state-map " fc" 'th-open-config-file)
-  (define-key evil-normal-state-map " fpp" 'th-open-pass-file)
-  (define-key evil-normal-state-map " fpo" (th-lambda-open-file "~/source/password/password_no_password.org"))
-  (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/")))
-  (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org")))
-  (define-key evil-normal-state-map " fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org")))
-  (define-key evil-normal-state-map " fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/"))))
-  (define-key evil-normal-state-map " fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org"))))
-  (define-key evil-normal-state-map " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt")))
-  (define-key evil-normal-state-map " fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org"))))
 #+END_SRC
-** which key
-  Brings up some help
-  #+BEGIN_SRC emacs-lisp
-    (setq general-default-keymaps 'evil-normal-state-map)
-    (use-package which-key
-      :ensure t
-      :config
-      (which-key-mode)
-      (general-define-key :prefix "<SPC>"
-                          "abn" 'th-new-post
-                          "abd" 'th-new-draft
-
-                          "g" 'magit-status
-
-                          "fd" (lambda () (interactive) (dired "."))
-                          "fr" 'th-sudo-edit
-
-                          "hf" 'describe-function
-
-                          "bb" 'helm-buffers-list
-                          "bk" 'kill-this-buffer
-
-                          "<SPC>" 'helm-M-x
-                          )
-      (which-key-add-key-based-replacements
-        "<SPC>a" "application"
-        "<SPC>b" "buffer operator"
-        "<SPC>f" "file operator"
-        "<SPC>g" "git oprator"
-        "<SPC>r" "window or frame"
-        "<SPC>h" "help"
-
-        "<SPC>ab" "blog"
-        "<SPC>abn" "new blog"
-
-        "<SPC>fd" "open dot file"
-        "<SPC>fo" "open org file"
-        "<SPC>fpo" "pwd file without pwd"
-
-        "<SPC> bb" "switch buffer"
-        "<SPC> bk" "kill buffer"
-        "<SPC><SPC>" "helm-M-x"
-
-        "<SPC>p" "project operators"
-        ))
-  #+END_SRC
 * move around
 ** move between windows
 #+BEGIN_SRC emacs-lisp
@@ -812,6 +795,9 @@ TODO
       :init
       (use-package helm)
       (use-package evil)
+      ;; will this work??
+      ;; bind with map
+      ;; I this this is not work, because the evil-normal-state-map is not ready yet.
       :bind (:map helm-swoop-map
                    ("C-n" . helm-next-line)
                    ("C-p" . helm-previous-line)
@@ -900,10 +886,6 @@ TODO
 
 
 
-;; config evil
-(setq key-chord-two-keys-delay 0.5)
-(key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-(key-chord-mode 1)
 
 ;; lua mode
 (defun th-lua_hook ()
@@ -917,9 +899,6 @@ TODO
 ;; yaml mode
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-
-;; all-the-icons
-(require 'all-the-icons)
 
 ;; lua mode
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
@@ -937,8 +916,6 @@ TODO
 ;; enable evil-surround
 (require 'evil-surround)
 (global-evil-surround-mode 1)
-
-(require 'general)
 
 (require 'key-chord)
 
