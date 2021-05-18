@@ -83,21 +83,68 @@ And the options it provided:
 #+END_SRC
 ** evil
  #+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :defer
-    :config
-    (evil-mode 1)
-    (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-    (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-    (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-    (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-    (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-    (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-    (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-    (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-    (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+(setq th-src-folder "")
+   (defun th-folder-to-src (folder)
+       (interactive)
+       (concat th-src-folder folder))
+   (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
+      (defun th-lambda-open-file (path)
+        `(lambda ()
+          (interactive)
+          (find-file ,path)))
 
-  )
+       (use-package evil
+         :defer
+         :config
+         (require 'general)
+         (evil-mode 1)
+
+               ;;; define neotree-mode-map
+         (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+         (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+         (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+         (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+         (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+         (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+         (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+         (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+         (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+         ;; (evil-define-key 'normal global-map (kbd "SPC") 'helm-M-x)
+
+         (general-define-key
+          :keymaps 'evil-normal-state-map
+          :prefix "<SPC>"
+          "abn" 'th-posts-new-post
+          "abd" 'th-posts-new-draft
+
+          "g" 'magit-status
+
+          "fd" (lambda () (interactive) (dired "."))
+          "fr" 'th-sudo-edit
+
+          "hf" 'describe-function
+
+          "bb" 'helm-buffers-list
+          "bk" 'kill-this-buffer)
+
+         (general-define-key
+          :keymaps 'evil-normal-state-map
+          :prefix "<SPC>"
+          "wf" 'toggle-frame-fullscreen
+          "wm" 'toggle-frame-maximized
+          "ft" 'th-open-org-file
+          "fc" 'th-open-config-file
+          "fpp" 'th-open-pass-file
+          "fpo" (th-lambda-open-file "~/source/password/password_no_password.org")
+          "fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
+          "fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
+          "fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
+          "fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/")))
+          "fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
+          "fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
+          "fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
+          )
+         )
 
 #+END_SRC
 
@@ -114,49 +161,36 @@ And the options it provided:
 ** which key
  Brings up some help
  #+BEGIN_SRC emacs-lisp
-   (use-package which-key
-     :after evil
-     :after gernal
-     :config
-     (which-key-mode)
-     (setq general-default-keymaps 'evil-normal-state-map)
-     (general-define-key :prefix "<SPC>"
-                         "abn" 'th-posts-new-post
-                         "abd" 'th-posts-new-draft
+      ;; 看样子你是没有load起来啊
+      (use-package which-key
+        :defer
+   ;; not work.
+        :after 'evil
+        :after 'gernal
+        :config
+        (which-key-mode)
+        (setq general-default-keymaps 'evil-normal-state-map)
+        (which-key-add-key-based-replacements
+          "<SPC>a" "application"
+          "<SPC>b" "buffer operator"
+          "<SPC>f" "file operator"
+          "<SPC>g" "git oprator"
+          "<SPC>r" "window or frame"
+          "<SPC>h" "help"
 
-                         "g" 'magit-status
+          "<SPC>ab" "blog"
+          "<SPC>abn" "new blog"
 
-                         "fd" (lambda () (interactive) (dired "."))
-                         "fr" 'th-sudo-edit
+          "<SPC>fd" "open dot file"
+          "<SPC>fo" "open org file"
+          "<SPC>fpo" "pwd file without pwd"
 
-                         "hf" 'describe-function
+          "<SPC> bb" "switch buffer"
+          "<SPC> bk" "kill buffer"
+          "<SPC><SPC>" "helm-M-x"
 
-                         "bb" 'helm-buffers-list
-                         "bk" 'kill-this-buffer
-
-                         "<SPC>" 'helm-M-x
-                         )
-     (which-key-add-key-based-replacements
-       "<SPC>a" "application"
-       "<SPC>b" "buffer operator"
-       "<SPC>f" "file operator"
-       "<SPC>g" "git oprator"
-       "<SPC>r" "window or frame"
-       "<SPC>h" "help"
-
-       "<SPC>ab" "blog"
-       "<SPC>abn" "new blog"
-
-       "<SPC>fd" "open dot file"
-       "<SPC>fo" "open org file"
-       "<SPC>fpo" "pwd file without pwd"
-
-       "<SPC> bb" "switch buffer"
-       "<SPC> bk" "kill buffer"
-       "<SPC><SPC>" "helm-M-x"
-
-       "<SPC>p" "project operators"
-       ))
+          "<SPC>p" "project operators"
+          ))
  #+END_SRC
 ** key-chord
 #+BEGIN_SRC emacs-lisp
@@ -181,24 +215,52 @@ And the options it provided:
     :after evil
     :config
     (message "general used")
-    (general-define-key
-     :keymaps 'evil-normal-state-map
-     :prefix "<SPC>"
-     "wf" 'toggle-frame-fullscreen
-     "wm" 'toggle-frame-maximized
-     " ft" 'th-open-org-file
-     " fc" 'th-open-config-file
-     " fpp" 'th-open-pass-file
-     " fpo" (th-lambda-open-file "~/source/password/password_no_password.org")
-     " fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
-     " fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
-     " fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
-     " fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/")))
-     " fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
-     " fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
-     " fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
-     ))
+    )
 #+END_SRC
+** helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :commands (helm-M-x)
+    :bind (("M-x" . helm-M-x)
+           ("M-<f5>" . helm-find-files)
+           ([f10] . helm-buffers-list)
+           ([s-f10] . helm-recentf)
+           )
+    :config
+    (require 'helm-config))
+#+END_SRC
+
+*** helm-swoop
+#+BEGIN_SRC emacs-lisp
+  (defun find-file-from-home ()
+    (interactive)
+    (helm-find-files-1 "~/"))
+
+    (use-package helm-swoop
+      :ensure t
+      :init
+      (use-package helm)
+      (use-package evil)
+      ;; will this work??
+      ;; bind with map
+      ;; I this this is not work, because the evil-normal-state-map is not ready yet.
+      :bind (:map helm-swoop-map
+                   ("C-n" . helm-next-line)
+                   ("C-p" . helm-previous-line)
+              :map evil-normal-state-map
+              ("/" . helm-swoop)
+              ;; find file in current dir
+              ("<SPC>ff" . helm-find-files)
+              ;; find file in home dir
+              ("<SPC>fh" . find-file-from-home)
+              )
+      :config
+      ;; disable pre input
+      (setq helm-swoop-pre-input-function
+            (lambda () ""))
+      )
+#+END_SRC
+   
 * package Init
 ** avy
 #+BEGIN_SRC emacs-lisp
@@ -268,7 +330,6 @@ And the options it provided:
 #+BEGIN_SRC emacs-lisp
   (if (not (boundp 'th-src-folder))
       (setq th-src-folder "~/source/"))
-
 #+END_SRC
 ** posts
 #+BEGIN_SRC emacs-lisp
@@ -276,10 +337,6 @@ And the options it provided:
 #+END_SRC
 ** setup the source folder
 #+BEGIN_SRC emacs-lisp
-(defun th-folder-to-src (folder)
-    (interactive)
-    (concat th-src-folder folder))
-(setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
 #+END_SRC
 ** Company
 #+BEGIN_SRC  emacs-lisp
@@ -688,10 +745,6 @@ And the options it provided:
 #+END_SRC
 ** quick open file
 #+BEGIN_SRC emacs-lisp  
-  (defun th-lambda-open-file (path)
-    `(lambda ()
-      (interactive)
-      (find-file ,path)))
 #+END_SRC
 * move around
 ** move between windows
@@ -782,37 +835,6 @@ And the options it provided:
      (list (read-buffer "Switch to buffer:"
                         (other-buffer)
                         (null current-prefix-arg)))))
-#+END_SRC
-* helm
-** helm-swoop
-#+BEGIN_SRC emacs-lisp
-  (defun find-file-from-home ()
-    (interactive)
-    (helm-find-files-1 "~/"))
-
-    (use-package helm-swoop
-      :ensure t
-      :init
-      (use-package helm)
-      (use-package evil)
-      ;; will this work??
-      ;; bind with map
-      ;; I this this is not work, because the evil-normal-state-map is not ready yet.
-      :bind (:map helm-swoop-map
-                   ("C-n" . helm-next-line)
-                   ("C-p" . helm-previous-line)
-              :map evil-normal-state-map
-              ("/" . helm-swoop)
-              ;; find file in current dir
-              ("<SPC>ff" . helm-find-files)
-              ;; find file in home dir
-              ("<SPC>fh" . find-file-from-home)
-              )
-      :config
-      ;; disable pre input
-      (setq helm-swoop-pre-input-function
-            (lambda () ""))
-      )
 #+END_SRC
 * program
 ** c
