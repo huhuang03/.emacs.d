@@ -85,67 +85,66 @@ And the options it provided:
  #+BEGIN_SRC emacs-lisp
    (setq th-src-folder "")
    (defun th-folder-to-src (folder)
-       (interactive)
-       (concat th-src-folder folder))
+     (interactive)
+     (concat th-src-folder folder))
    (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
-      (defun th-lambda-open-file (path)
-        `(lambda ()
-          (interactive)
-          (find-file ,path)))
+   (defun th-lambda-open-file (path)
+     `(lambda ()
+        (interactive)
+        (find-file ,path)))
 
-       (use-package evil
-         :defer
-         :config
-         (require 'general)
-         (evil-mode 1)
+   (use-package evil
+     :defer
+     :config
+     (require 'general)
+     (evil-mode 1)
 
-               ;;; define neotree-mode-map
-         (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-         (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-         (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-         (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-         (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-         (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-         (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-         (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-         (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-         ;; (evil-define-key 'normal global-map (kbd "SPC") 'helm-M-x)
+;;; define neotree-mode-map
+     (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+     (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+     (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+     (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+     (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+     (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+     (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+     (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+     (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+     (evil-define-key 'normal global-map (kbd "SPC SPC") 'helm-M-x)
 
-         (general-define-key
-          :keymaps 'evil-normal-state-map
-          :prefix "<SPC>"
-          "abn" 'th-posts-new-post
-          "abd" 'th-posts-new-draft
+     (general-define-key
+      :keymaps 'evil-normal-state-map
+      :prefix "<SPC>"
+      "abn" 'th-posts-new-post
+      "abd" 'th-posts-new-draft
 
-          "g" 'magit-status
+      "g" 'magit-status
 
-          "fd" (lambda () (interactive) (dired "."))
-          "fr" 'th-sudo-edit
+      "fd" (lambda () (interactive) (dired "."))
+      "fr" 'th-sudo-edit
 
-          "hf" 'describe-function
+      "hf" 'describe-function
 
-          "bb" 'helm-buffers-list
-          "bk" 'kill-this-buffer)
+      "bb" 'helm-buffers-list
+      "bk" 'kill-this-buffer)
 
-         (general-define-key
-          :keymaps 'evil-normal-state-map
-          :prefix "<SPC>"
-          "wf" 'toggle-frame-fullscreen
-          "wm" 'toggle-frame-maximized
-          "ft" 'th-open-org-file
-          "fc" 'th-open-config-file
-          "fpp" 'th-open-pass-file
-          "fpo" (th-lambda-open-file "~/source/password/password_no_password.org")
-          "fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
-          "fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
-          "fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
-          "fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/")))
-          "fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
-          "fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
-          "fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
-          )
-         )
-
+     (general-define-key
+      :keymaps 'evil-normal-state-map
+      :prefix "<SPC>"
+      "wf" 'toggle-frame-fullscreen
+      "wm" 'toggle-frame-maximized
+      "ft" 'th-open-org-file
+      "fc" 'th-open-config-file
+      "fpp" 'th-open-pass-file
+      "fpo" (th-lambda-open-file "~/source/password/password_no_password.org")
+      "fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
+      "fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
+      "fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
+      "fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/")))
+      "fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
+      "fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
+      "fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
+      )
+     )
 #+END_SRC
 
 ** projectile
@@ -205,18 +204,6 @@ And the options it provided:
     (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
 
 #+END_SRC
-** general
-#+BEGIN_SRC emacs-lisp
-    ;; fullscreen or maximized frame
-    ;; Ok we need one thing to active genral
-    (require 'general)
-  (use-package general
-    :defer
-    :after evil
-    :config
-    (message "general used")
-    )
-#+END_SRC
 ** helm
 #+BEGIN_SRC emacs-lisp
   (use-package helm
@@ -261,6 +248,17 @@ And the options it provided:
       )
 #+END_SRC
    
+** company
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :defer t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous)
+    )
+#+END_SRC
+
 * package Init
 ** avy
 #+BEGIN_SRC emacs-lisp
@@ -312,12 +310,6 @@ And the options it provided:
     (setq nand2tetris-core-base-dir "/Users/th/source/clone/nand2tetris")
     (add-to-list 'auto-mode-alist '("\\.hdl\\'" . nand2tetris-mode)))
 #+END_SRC
-*** jack
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(require 'jack-mode)
-(add-to-list 'auto-mode-alist '("\\.jack\\'" . jack-mode))
-#+END_SRC
 * Th
 ** load the local.el
 #+BEGIN_SRC emacs-lisp  
@@ -338,15 +330,9 @@ And the options it provided:
 ** setup the source folder
 #+BEGIN_SRC emacs-lisp
 #+END_SRC
-** Company
+** other
 #+BEGIN_SRC  emacs-lisp
 ;; config company
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
-
-
 ;; custom org mode
 ;; C-c [ to add file to agenda-files
 (global-set-key "\C-cl" 'org-store-link)
@@ -954,37 +940,42 @@ And the options it provided:
 #+END_SRC
 * Company
 #+BEGIN_SRC  emacs-lisp
-;; config company
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
-
-
-;; custom org mode
-;; C-c [ to add file to agenda-files
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-
-
-;; turn on recentf files feature
-(recentf-mode 1)
-
-;; auto follow link
-(setq vc-follow-symlinks 1)
-
-(when (display-graphic-p)
-    (scroll-bar-mode -1))
-
-(global-linum-mode 1) ; alway shwo line numbers
-(setq make-backup-files nil) ; stop creating backup~ files
-(setq auto-save-default nil) ; stop creating #autosave# files
-(electric-pair-mode t)
+  ;; config company
+  (use-package company
+    :defer t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    (global-company-mode)
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous)
+    )
 
 
 
-;; add make file to makefile-mode
-(add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
+  ;; custom org mode
+  ;; C-c [ to add file to agenda-files
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+
+
+  ;; turn on recentf files feature
+  (recentf-mode 1)
+
+  ;; auto follow link
+  (setq vc-follow-symlinks 1)
+
+  (when (display-graphic-p)
+      (scroll-bar-mode -1))
+
+  (global-linum-mode 1) ; alway shwo line numbers
+  (setq make-backup-files nil) ; stop creating backup~ files
+  (setq auto-save-default nil) ; stop creating #autosave# files
+  (electric-pair-mode t)
+
+
+
+  ;; add make file to makefile-mode
+  (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 #+END_SRC
 * debug
 #+BEGIN_SRC emacs-lisp
