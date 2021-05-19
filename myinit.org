@@ -322,6 +322,8 @@ And the options it provided:
 #+BEGIN_SRC emacs-lisp
   (if (not (boundp 'th-src-folder))
       (setq th-src-folder "~/source/"))
+
+  (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
 #+END_SRC
 ** posts
 #+BEGIN_SRC emacs-lisp
@@ -362,7 +364,7 @@ And the options it provided:
 (defun th-open-org-file ()
   "Open org file"
   (interactive)
-  (find-file th-path-gtd-file))
+  (find-file (th-folder-to-src "org/gtd.org")))
 #+END_SRC
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
