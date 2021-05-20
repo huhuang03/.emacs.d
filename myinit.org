@@ -1,5 +1,30 @@
 #+STARTUP overview 
+* Basic Config
+** Startup Performance
+#+BEGIN_SRC emacs-lisp
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 80 1024 1024))
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+#+END_SRC
 * init
+** The initial is not relative to others, so we can config at here.
+#+BEGIN_SRC 
+;; 文件编码
+(setq default-process-coding-system '(utf-8 . utf-8))
+(set-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+;; will this delay the star time?
+(server-start)
+#+END_SRC
 ** Install all need packages
 #+BEGIN_SRC emacs-lisp
 ;; enable comman lisp extension to enable some strange expression
@@ -50,19 +75,6 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 #+END_SRC
-** env
-#+BEGIN_SRC emacs-lisp
-(setq default-process-coding-system '(utf-8 . utf-8))
-(set-language-environment "UTF-8")
-;; 文件编码
-(prefer-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (server-start)
-#+END_SRC
-
 * initial packages
 ** How to startup start speed?
    
@@ -94,22 +106,9 @@ And the options it provided:
         (find-file ,path)))
 
    (use-package evil
-     :defer
      :config
      (require 'general)
      (evil-mode 1)
-
-;;; define neotree-mode-map
-     (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-     (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-     (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-     (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-     (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
-     (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
-     (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
-     (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-     (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-     (evil-define-key 'normal global-map (kbd "SPC SPC") 'helm-M-x)
 
      (general-define-key
       :keymaps 'evil-normal-state-map
@@ -139,7 +138,6 @@ And the options it provided:
       "fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
       "fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
       "fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
-      "fb" (lambda () (interactive) (neotree-dir (th-folder-to-src "huhuang03.github.io/posts/")))
       "fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
       "fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
       "fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
@@ -408,10 +406,6 @@ And the options it provided:
   (add-hook 'json-mode-hook (lambda ()
                               (make-local-variable 'js-indent-line)
                               (setq js-indent-line 2)))
-#+END_SRC
-** neotree
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "s-1") 'neotree-toggle)
 #+END_SRC
 *** config with evil
 #+BEGIN_SRC emacs-lisp
