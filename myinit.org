@@ -1,22 +1,7 @@
 #+STARTUP overview 
-* Basic Config
-** Startup Performance
-#+BEGIN_SRC emacs-lisp
-;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 80 1024 1024))
-
-;; Profile emacs startup
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
-#+END_SRC
-* init
+* Initial
 ** The initial is not relative to others, so we can config at here.
-#+BEGIN_SRC 
+#+BEGIN_SRC emacs-lisp
 ;; 文件编码
 (setq default-process-coding-system '(utf-8 . utf-8))
 (set-language-environment "UTF-8")
@@ -75,6 +60,36 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 #+END_SRC
+* Basic Config
+** Startup Performance
+#+BEGIN_SRC emacs-lisp
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 80 1024 1024))
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+#+END_SRC
+** Evil
+*** evil keymap
+#+BEGIN_SRC emacs-lisp
+  (defun th-evil-define-keys ()
+    (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'helm-M-x)
+    (define-key evil-normal-state-map (kbd "<SPC>bb") 'helm-buffers-list))
+#+END_SRC
+* initial packages
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :config
+  ;; simpe is the most useful
+    (th-evil-define-keys)
+  )
+#+END_SRC
 * initial packages
 ** How to startup start speed?
    
@@ -123,7 +138,6 @@ And the options it provided:
 
       "hf" 'describe-function
 
-      "bb" 'helm-buffers-list
       "bk" 'kill-this-buffer)
 
      (general-define-key
@@ -203,7 +217,7 @@ And the options it provided:
 
 #+END_SRC
 ** helm
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp1
   (use-package helm
     :commands (helm-M-x)
     :bind (("M-x" . helm-M-x)
