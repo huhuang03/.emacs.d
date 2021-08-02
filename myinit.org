@@ -1,6 +1,13 @@
 #+STARTUP overview 
 * Initial
-** The initial is not relative to others, so we can config at here.
+  Initial is the first thing need before other things come.
+** Set el indent to 2.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook
+  (function (lambda ()
+    (setq tab-width 2))))
+#+END_SRC
+** The basic initial and not relative to others.
 #+BEGIN_SRC emacs-lisp
 ;; 文件编码
 (setq default-process-coding-system '(utf-8 . utf-8))
@@ -10,6 +17,13 @@
 ;; will this delay the star time?
 (server-start)
 #+END_SRC
+*** fix path
+#+BEGIN_SRC emacs-lisp
+;; copy path
+;; on win is w32
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+#+END_SRC
 ** Install all need packages
 #+BEGIN_SRC emacs-lisp
 ;; enable comman lisp extension to enable some strange expression
@@ -18,11 +32,8 @@
 ;; you can use func eval-defun to rebuild variable
 (setq th-lang_mode '(
                        groovy-mode
-                       csharp-mode
-                       yaml-mode
                        lua-mode
                        go-mode
-                       web-mode
                        cmake-mode
                        markdown-mode))
 
@@ -30,7 +41,6 @@
                       	github-modern-theme
                         avy
                         json-mode
-                        htmlize
                         tiny
                         yasnippet
                         flycheck
@@ -54,12 +64,6 @@
       )))
 (th-install-packages)
 #+END_SRC
-** fix path
-#+BEGIN_SRC emacs-lisp
-;; copy path
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-#+END_SRC
 * Basic Config
 ** Startup Performance
 #+BEGIN_SRC emacs-lisp
@@ -82,7 +86,8 @@
     (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'helm-M-x)
     (define-key evil-normal-state-map (kbd "<SPC>bb") 'helm-buffers-list))
 #+END_SRC
-* initial packages
+
+*** Use eval
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :config
@@ -336,10 +341,6 @@ And the options it provided:
       (setq th-src-folder "~/source/"))
 
   (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
-#+END_SRC
-** posts
-#+BEGIN_SRC emacs-lisp
-(require 'th-posts-mode)
 #+END_SRC
 ** setup the source folder
 #+BEGIN_SRC emacs-lisp
@@ -988,10 +989,8 @@ And the options it provided:
   (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 #+END_SRC
 * debug
-#+BEGIN_SRC emacs-lisp
-(global-set-key "\M-?" 'help-command)
-#+END_SRC
 ** undo scrool up n times
+   I foget what this do.
 #+BEGIN_SRC emacs-lisp
   (defvar unscroll-point (make-marker)
     "Cursor position for next call to 'unscroll'.")
@@ -1040,19 +1039,8 @@ And the options it provided:
     (set-window-start nil unscroll-window-start)
     (set-window-hscroll nil unscroll-hscroll))
 #+END_SRC
-* try
-#+BEGIN_SRC emacs-lisp
-(use-package try
-  :ensure t)
-#+END_SRC
-* test
-#+BEGIN_SRC emacs-lisp
-  (defun test1()
-    (interactive)
-    (message-box "hello in test1"))
-#+END_SRC
-
-* headline auto indent when in evil+org-mode
+* Custom
+** headline auto indent when in evil+org-mode
 #+BEGIN_SRC emacs-lisp
 (defun th-headline-auto-indent(start end len)
   (if (and (eq len 0)
@@ -1085,4 +1073,10 @@ And the options it provided:
     (add-hook 'after-change-functions 'th-headline-auto-indent t t))
 
 (add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
+#+END_SRC
+** load my dev th-post.emacs plugin
+#+BEGIN_SRC emacs-lisp
+(if (file-exists-p "elpa/th-posts.emacs")
+    (require 'th-posts-mode)
+  (message "not-exist"))
 #+END_SRC
