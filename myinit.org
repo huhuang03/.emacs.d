@@ -1,6 +1,73 @@
 #+STARTUP overview 
 * Initial
-  Initial is the first thing need before other things come.
+Initial the basic env that I used.
+** enable evil
+**** evil
+ #+BEGIN_SRC emacs-lisp
+   (setq th-src-folder "")
+   (defun th-folder-to-src (folder)
+     (interactive)
+     (concat th-src-folder folder))
+   (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
+   (defun th-lambda-open-file (path)
+     `(lambda ()
+        (interactive)
+        (find-file ,path)))
+
+   (use-package evil
+     :config
+     (require 'general)
+     (evil-mode 1)
+
+     (general-define-key
+      :keymaps 'evil-normal-state-map
+      :prefix "<SPC>"
+      "abn" 'th-posts-new-post
+      "abd" 'th-posts-new-draft
+
+      "g" 'magit-status
+
+      "fd" (lambda () (interactive) (dired "."))
+      "fr" 'th-sudo-edit
+
+      "hf" 'describe-function
+
+      "bk" 'kill-this-buffer)
+
+     (general-define-key
+      :keymaps 'evil-normal-state-map
+      :prefix "<SPC>"
+      "wf" 'toggle-frame-fullscreen
+      "wm" 'toggle-frame-maximized
+      "ft" 'th-open-org-file
+      "fc" 'th-open-config-file
+      "fpp" 'th-open-pass-file
+      "fpo" (th-lambda-open-file "~/source/password/password_no_password.org")
+      "fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
+      "fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
+      "fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
+      "fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
+      "fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
+      "fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
+      )
+     )
+#+END_SRC
+
+**** evil keymap
+#+BEGIN_SRC emacs-lisp
+  (defun th-evil-define-keys ()
+    (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'helm-M-x)
+    (define-key evil-normal-state-map (kbd "<SPC>bb") 'helm-buffers-list))
+#+END_SRC
+
+**** Use eval
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :config
+  ;; simpe is the most useful
+    (th-evil-define-keys)
+  )
+#+END_SRC
 ** Set el indent to 2.
 #+BEGIN_SRC emacs-lisp
 (add-hook 'emacs-lisp-mode-hook
@@ -80,20 +147,13 @@
                      gcs-done)))
 #+END_SRC
 ** Evil
-*** evil keymap
+** Enable eval code block
 #+BEGIN_SRC emacs-lisp
-  (defun th-evil-define-keys ()
-    (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'helm-M-x)
-    (define-key evil-normal-state-map (kbd "<SPC>bb") 'helm-buffers-list))
-#+END_SRC
-
-*** Use eval
-#+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :config
-  ;; simpe is the most useful
-    (th-evil-define-keys)
-  )
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . nil)
+     (R . t)
+     ))
 #+END_SRC
 * initial packages
 ** How to startup start speed?
@@ -113,57 +173,6 @@ And the options it provided:
 (require 'use-package-ensure)
 (setq use-pacakge-always-ensure t)
 #+END_SRC
-** evil
- #+BEGIN_SRC emacs-lisp
-   (setq th-src-folder "")
-   (defun th-folder-to-src (folder)
-     (interactive)
-     (concat th-src-folder folder))
-   (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
-   (defun th-lambda-open-file (path)
-     `(lambda ()
-        (interactive)
-        (find-file ,path)))
-
-   (use-package evil
-     :config
-     (require 'general)
-     (evil-mode 1)
-
-     (general-define-key
-      :keymaps 'evil-normal-state-map
-      :prefix "<SPC>"
-      "abn" 'th-posts-new-post
-      "abd" 'th-posts-new-draft
-
-      "g" 'magit-status
-
-      "fd" (lambda () (interactive) (dired "."))
-      "fr" 'th-sudo-edit
-
-      "hf" 'describe-function
-
-      "bk" 'kill-this-buffer)
-
-     (general-define-key
-      :keymaps 'evil-normal-state-map
-      :prefix "<SPC>"
-      "wf" 'toggle-frame-fullscreen
-      "wm" 'toggle-frame-maximized
-      "ft" 'th-open-org-file
-      "fc" 'th-open-config-file
-      "fpp" 'th-open-pass-file
-      "fpo" (th-lambda-open-file "~/source/password/password_no_password.org")
-      "fb" (lambda () (interactive) (neotree-dir "~/source/huhuang03.github.io.posts/posts/"))
-      "fpo" (lambda () (interactive) (find-file "~/source/password/password_no_password.org"))
-      "fpo" (th-lambda-open-file (th-folder-to-src "password/password_no_password.org"))
-      "fpo" (lambda () (interactive) (find-file (th-folder-to-src "password/password_no_password.org")))
-      "fs" (lambda () (interactive) (find-file "~/.ShadowsocksX-NG/user-rule.txt"))
-      "fn" (lambda () (interactive) (find-file (th-folder-to-src "org/note.org")))
-      )
-     )
-#+END_SRC
-
 ** projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
@@ -276,7 +285,6 @@ And the options it provided:
     )
 #+END_SRC
 
-* package Init
 ** avy
 #+BEGIN_SRC emacs-lisp
 (use-package avy
