@@ -155,6 +155,8 @@ Initial the basic env that I used.
      (R . t)
      ))
 #+END_SRC
+** enable the same width font
+[[https://github.com/laishulu/Sarasa-Mono-SC-Nerd][Sarasa-Mono-SC-Nerd(更纱黑体)]], 
 * initial packages
 ** How to startup start speed?
    
@@ -673,7 +675,7 @@ And the options it provided:
       ))
   )
 #+END_SRC
-* uI
+* UI
 ** try set front size
 #+BEGIN_SRC emacs-lisp
 (set-face-attribute 'default nil :height 180)
