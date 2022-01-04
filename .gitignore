@@ -15,3 +15,5 @@ url/cache/
 local.el
 .*
 server/
+
+tramp

@@ -79,10 +79,11 @@
 *** evil keymap
 #+BEGIN_SRC emacs-lisp
   (defun th-evil-define-keys ()
+    (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
     (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'helm-M-x)
     (define-key evil-normal-state-map (kbd "<SPC>bb") 'helm-buffers-list))
 #+END_SRC
-* initial packages
+*** evil
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :config
@@ -272,6 +273,14 @@ And the options it provided:
 #+END_SRC
 
 * package Init
+** comm help function etc
+#+begin_src emacs-lisp
+  (defun electric-pair ()
+    "If at end of line, insert charater pair without surround space.
+  Other wise, just inser tht typed charater."
+    (interactive)
+    (self-insert-command 2))
+#+end_src
 ** avy
 #+BEGIN_SRC emacs-lisp
 (use-package avy
@@ -311,6 +320,14 @@ And the options it provided:
     (org-restart-font-lock)
     (setq org-descriptive-links t))))
 #+END_SRC
+*** auto pair ~
+#+begin_src emacs-lisp
+;; this is work. but can I define the in only emacs-mode?
+  (setq electric-pair-pairs
+        '(
+          (?\" . ?\")
+          (?~ . ?~)))
+#+end_src
 ** cmake mode
 #+BEGIN_SRC emacs-lisp
 (require 'cmake-mode)
@@ -340,9 +357,6 @@ And the options it provided:
 ** posts
 #+BEGIN_SRC emacs-lisp
 (require 'th-posts-mode)
-#+END_SRC
-** setup the source folder
-#+BEGIN_SRC emacs-lisp
 #+END_SRC
 ** other
 #+BEGIN_SRC  emacs-lisp
@@ -453,6 +467,7 @@ And the options it provided:
              ("lua". "lua")
              ("rb". "ruby")
              ("cpp" . "g++ --std=c++11")
+             ("cc" . "g++ --std=c++11")
              ("js" . "node")
              ("go" . "go")
              ))
