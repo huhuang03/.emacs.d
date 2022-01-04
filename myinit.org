@@ -1,115 +1,8 @@
 #+STARTUP overview 
 * Initial
-** The initial is not relative to others, so we can config at here.
-#+BEGIN_SRC emacs-lisp
-;; 文件编码
-(setq default-process-coding-system '(utf-8 . utf-8))
-(set-language-environment "UTF-8")
-(prefer-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-;; will this delay the star time?
-(server-start)
-#+END_SRC
-** Install all need packages
-#+BEGIN_SRC emacs-lisp
-;; enable comman lisp extension to enable some strange expression
-(require 'cl)
-
-;; you can use func eval-defun to rebuild variable
-(setq th-lang_mode '(
-                       groovy-mode
-                       csharp-mode
-                       yaml-mode
-                       lua-mode
-                       go-mode
-                       web-mode
-                       cmake-mode
-                       markdown-mode))
-
-(setq th-common_pkg '(
-                      	github-modern-theme
-                        avy
-                        json-mode
-                        htmlize
-                        tiny
-                        yasnippet
-                        flycheck
-                        monokai-theme
-                        exec-path-from-shell
-                        evil-surround
-                        auto-complete
-                        auto-complete-c-headers
-                        company
-                        ))
-
-(defvar th-packages (append th-lang_mode th-common_pkg))
-
-(defun th-install-packages ()	
-  (dolist (pkg th-packages)
-    (when (not (package-installed-p pkg))
-	(progn
-	  (package-refresh-contents)
-	  (package-install pkg)
-	  )
-      )))
-(th-install-packages)
-#+END_SRC
-** fix path
-#+BEGIN_SRC emacs-lisp
-;; copy path
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-#+END_SRC
-* Basic Config
-** Startup Performance
-#+BEGIN_SRC emacs-lisp
-;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 80 1024 1024))
-
-;; Profile emacs startup
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
-#+END_SRC
-** Evil
-*** evil keymap
-#+BEGIN_SRC emacs-lisp
-  (defun th-evil-define-keys ()
-    (define-key evil-insert-state-map (kbd "TAB") 'tab-to-tab-stop)
-    (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'helm-M-x)
-    (define-key evil-normal-state-map (kbd "<SPC>bb") 'helm-buffers-list))
-#+END_SRC
-*** evil
-#+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :config
-  ;; simpe is the most useful
-    (th-evil-define-keys)
-  )
-#+END_SRC
-* initial packages
-** How to startup start speed?
-   
-~emacs-init-time~ show the startup time, for now is: 8.3
-
-The key is use ~use-package~
-
-And the options it provided:
-- :hook
-- :bind
-- :commands
-- :after
-- :defer If you don't use other options, this one will defer loading unti after startup.
-#+BEGIN_SRC 
-(setq use-pacakge-verbose t)
-(require 'use-package-ensure)
-(setq use-pacakge-always-ensure t)
-#+END_SRC
-** evil
+Initial the basic env that I used.
+** enable evil
+**** evil
  #+BEGIN_SRC emacs-lisp
    (setq th-src-folder "")
    (defun th-folder-to-src (folder)
@@ -160,6 +53,128 @@ And the options it provided:
      )
 #+END_SRC
 
+**** evil keymap
+#+BEGIN_SRC emacs-lisp
+  (defun th-evil-define-keys ()
+    (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'helm-M-x)
+    (define-key evil-normal-state-map (kbd "<SPC>bb") 'helm-buffers-list))
+#+END_SRC
+
+**** Use eval
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :config
+  ;; simpe is the most useful
+    (th-evil-define-keys)
+  )
+#+END_SRC
+** Set el indent to 2.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook
+  (function (lambda ()
+    (setq tab-width 2))))
+#+END_SRC
+** The basic initial and not relative to others.
+#+BEGIN_SRC emacs-lisp
+;; 文件编码
+(setq default-process-coding-system '(utf-8 . utf-8))
+(set-language-environment "UTF-8")
+(prefer-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+;; will this delay the star time?
+(server-start)
+#+END_SRC
+*** fix path
+#+BEGIN_SRC emacs-lisp
+;; copy path
+;; on win is w32
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+#+END_SRC
+** Install all need packages
+#+BEGIN_SRC emacs-lisp
+;; enable comman lisp extension to enable some strange expression
+(require 'cl)
+
+;; you can use func eval-defun to rebuild variable
+(setq th-lang_mode '(
+                       groovy-mode
+                       lua-mode
+                       go-mode
+                       cmake-mode
+                       markdown-mode))
+
+(setq th-common_pkg '(
+                      	github-modern-theme
+                        avy
+                        json-mode
+                        tiny
+                        yasnippet
+                        flycheck
+                        monokai-theme
+                        exec-path-from-shell
+                        evil-surround
+                        auto-complete
+                        auto-complete-c-headers
+                        company
+                        ))
+
+(defvar th-packages (append th-lang_mode th-common_pkg))
+
+(defun th-install-packages ()	
+  (dolist (pkg th-packages)
+    (when (not (package-installed-p pkg))
+	(progn
+	  (package-refresh-contents)
+	  (package-install pkg)
+	  )
+      )))
+(th-install-packages)
+#+END_SRC
+* Basic Config
+** Startup Performance
+#+BEGIN_SRC emacs-lisp
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 80 1024 1024))
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+#+END_SRC
+** Evil
+** Enable eval code block
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . nil)
+     (R . t)
+     ))
+#+END_SRC
+** enable the same width font
+[[https://github.com/laishulu/Sarasa-Mono-SC-Nerd][Sarasa-Mono-SC-Nerd(更纱黑体)]], 
+* initial packages
+** How to startup start speed?
+   
+~emacs-init-time~ show the startup time, for now is: 8.3
+
+The key is use ~use-package~
+
+And the options it provided:
+- :hook
+- :bind
+- :commands
+- :after
+- :defer If you don't use other options, this one will defer loading unti after startup.
+#+BEGIN_SRC 
+(setq use-pacakge-verbose t)
+(require 'use-package-ensure)
+(setq use-pacakge-always-ensure t)
+#+END_SRC
 ** projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
@@ -272,15 +287,6 @@ And the options it provided:
     )
 #+END_SRC
 
-* package Init
-** comm help function etc
-#+begin_src emacs-lisp
-  (defun electric-pair ()
-    "If at end of line, insert charater pair without surround space.
-  Other wise, just inser tht typed charater."
-    (interactive)
-    (self-insert-command 2))
-#+end_src
 ** avy
 #+BEGIN_SRC emacs-lisp
 (use-package avy
@@ -320,14 +326,6 @@ And the options it provided:
     (org-restart-font-lock)
     (setq org-descriptive-links t))))
 #+END_SRC
-*** auto pair ~
-#+begin_src emacs-lisp
-;; this is work. but can I define the in only emacs-mode?
-  (setq electric-pair-pairs
-        '(
-          (?\" . ?\")
-          (?~ . ?~)))
-#+end_src
 ** cmake mode
 #+BEGIN_SRC emacs-lisp
 (require 'cmake-mode)
@@ -354,9 +352,8 @@ And the options it provided:
 
   (setq th-path-gtd-file (th-folder-to-src "org/gtd.org"))
 #+END_SRC
-** posts
+** setup the source folder
 #+BEGIN_SRC emacs-lisp
-(require 'th-posts-mode)
 #+END_SRC
 ** other
 #+BEGIN_SRC  emacs-lisp
@@ -467,7 +464,6 @@ And the options it provided:
              ("lua". "lua")
              ("rb". "ruby")
              ("cpp" . "g++ --std=c++11")
-             ("cc" . "g++ --std=c++11")
              ("js" . "node")
              ("go" . "go")
              ))
@@ -679,7 +675,7 @@ And the options it provided:
       ))
   )
 #+END_SRC
-* uI
+* UI
 ** try set front size
 #+BEGIN_SRC emacs-lisp
 (set-face-attribute 'default nil :height 180)
@@ -1003,10 +999,8 @@ And the options it provided:
   (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 #+END_SRC
 * debug
-#+BEGIN_SRC emacs-lisp
-(global-set-key "\M-?" 'help-command)
-#+END_SRC
 ** undo scrool up n times
+   I foget what this do.
 #+BEGIN_SRC emacs-lisp
   (defvar unscroll-point (make-marker)
     "Cursor position for next call to 'unscroll'.")
@@ -1055,19 +1049,8 @@ And the options it provided:
     (set-window-start nil unscroll-window-start)
     (set-window-hscroll nil unscroll-hscroll))
 #+END_SRC
-* try
-#+BEGIN_SRC emacs-lisp
-(use-package try
-  :ensure t)
-#+END_SRC
-* test
-#+BEGIN_SRC emacs-lisp
-  (defun test1()
-    (interactive)
-    (message-box "hello in test1"))
-#+END_SRC
-
-* headline auto indent when in evil+org-mode
+* Custom
+** headline auto indent when in evil+org-mode
 #+BEGIN_SRC emacs-lisp
 (defun th-headline-auto-indent(start end len)
   (if (and (eq len 0)
@@ -1100,4 +1083,10 @@ And the options it provided:
     (add-hook 'after-change-functions 'th-headline-auto-indent t t))
 
 (add-hook 'org-mode-hook 'th-add-headline-auto-indent-hook t)
+#+END_SRC
+** load my dev th-post.emacs plugin
+#+BEGIN_SRC emacs-lisp
+(if (file-exists-p "elpa/th-posts.emacs")
+    (require 'th-posts-mode)
+  (message "not-exist"))
 #+END_SRC
