@@ -925,10 +925,6 @@ And the options it provided:
 
 (add-hook 'lua-mode-hook 'th-lua_hook)
 
-;; yaml mode
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-
 ;; lua mode
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
