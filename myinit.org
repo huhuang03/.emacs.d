@@ -4,7 +4,7 @@ Initial the basic env that I used.
 ** enable evil
 **** evil
  #+BEGIN_SRC emacs-lisp
-   (setq th-src-folder "d:/source")
+   (setq th-src-folder "d:/source/")
    (defun th-folder-to-src (folder)
      (interactive)
      (concat th-src-folder folder))
@@ -15,8 +15,8 @@ Initial the basic env that I used.
         (find-file ,path)))
 
    (use-package evil
+     :requires general
      :config
-     (require 'general)
      (evil-mode 1)
 
      (general-define-key
