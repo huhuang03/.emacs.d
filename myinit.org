@@ -14,11 +14,12 @@ Initial the basic env that I used.
         (interactive)
         (find-file ,path)))
 
+   (use-package general)
+   ;; look like the eror is some key map issue.
    (use-package evil
-     :requires general
+     :after (general)
      :config
      (evil-mode 1)
-
      (general-define-key
       :keymaps 'evil-normal-state-map
       :prefix "<SPC>"
@@ -94,7 +95,7 @@ Initial the basic env that I used.
 ** Install all need packages
 #+BEGIN_SRC emacs-lisp
 ;; enable comman lisp extension to enable some strange expression
-(require 'cl)
+;; (require 'cl)
 
 ;; you can use func eval-defun to rebuild variable
 (setq th-lang_mode '(
