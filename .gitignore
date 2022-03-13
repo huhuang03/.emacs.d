@@ -19,3 +19,4 @@ flycheck_*
 network-security.data
 straight/
 test/
+org-persist/

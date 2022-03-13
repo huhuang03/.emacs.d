@@ -1,3 +1,9 @@
+;; Set default coding system (especially for Windows)
+(set-default-coding-systems 'utf-8)
+
+;; Add the modules folder to the load path
+(add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
+
 ;; initialize straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -23,6 +29,9 @@
 ;; enable org
 (straight-use-package 'org)
 
+
+(require 'config-default)
+
 ;; (unless (package-installed-p 'use-package)
 ;;   (package-refresh-contents)
 ;;   (package-install 'use-package))
@@ -35,7 +44,7 @@
 ;; (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
 
 ;; org-babel-load-file
-(org-babel-tangle test/test.org)
+;; (org-babel-tangle-file test/test.org)
 
 ;; (org-bable-)
 
