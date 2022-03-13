@@ -12,6 +12,7 @@
         (:map evil-normal-state-map
             ("<SPC> wm" . toggle-frame-fullscreen)
             ("<SPC> fc" . go-config-home)
+	    ;; any better idea to put a lambda here?
             ))
 
 (provide 'config-evil)

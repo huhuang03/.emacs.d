@@ -1,9 +1,8 @@
-;; I need evil
-;; I want put space f f to find-file. always?
-;; If a mode that evil not set, the space things will not work too?
-;; For I put all the evil things here. and If there's some sitation evil can enable. We will change at that time.
-
 ;; auto matic rever buffer when chaned out of emacs
 (global-auto-revert-mode 1)
+
+;; try change end_of_file to lr
+;; https://stackoverflow.com/questions/9760290/emacs-change-default-line-ending
+(setq default-buffer-file-coding-system 'utf-8-unix)
 
 (provide 'config-default)
