@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: cfun
-# key: cfun
-# --
-function `(file-name-base)`:$1($2)
-  $0
-end

@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: class
-# key: class_
-# --
-local `(file-name-base)` = class("`(file-name-base)`")
-
-$0
-
-return `(file-name-base)`

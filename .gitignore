@@ -21,3 +21,5 @@ straight/
 test/
 org-persist/
 modules/config-local.el
+
+snippets/
