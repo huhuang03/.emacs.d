@@ -20,3 +20,4 @@ network-security.data
 straight/
 test/
 org-persist/
+modules/config-local.el

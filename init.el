@@ -26,11 +26,21 @@
   (package-initialize)
         )
 
+;; straight integration with use-package
+(straight-use-package 'use-package)
+
 ;; enable org
 (straight-use-package 'org)
 
 
 (require 'config-default)
+(require 'config-ui)
+(require 'config-window)
+(require 'config-evil)
+(require 'config-other)
+
+;; load local with no error
+(require 'config-local nil)
 
 ;; (unless (package-installed-p 'use-package)
 ;;   (package-refresh-contents)
