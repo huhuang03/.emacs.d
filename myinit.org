@@ -1,7 +1,7 @@
 #+STARTUP overview 
 * Initial
-Initial the basic env that I used.
-** enable evil
+  This is a min required packages I need.
+** evil
 **** evil
  #+BEGIN_SRC emacs-lisp
    (setq th-src-folder "")
@@ -132,6 +132,7 @@ Initial the basic env that I used.
 (th-install-packages)
 #+END_SRC
 * Basic Config
+** Post
 ** Startup Performance
 #+BEGIN_SRC emacs-lisp
 ;; The default is 800 kilobytes.  Measured in bytes.
@@ -145,15 +146,6 @@ Initial the basic env that I used.
                              (float-time
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
-#+END_SRC
-** Evil
-** Enable eval code block
-#+BEGIN_SRC emacs-lisp
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . nil)
-     (R . t)
-     ))
 #+END_SRC
 ** enable the same width font
 [[https://github.com/laishulu/Sarasa-Mono-SC-Nerd][Sarasa-Mono-SC-Nerd(更纱黑体)]], 
@@ -999,55 +991,9 @@ And the options it provided:
   (add-to-list 'auto-mode-alist '("Makefile" . makefile-mode))
 #+END_SRC
 * debug
-** undo scrool up n times
-   I foget what this do.
+** load the th-test.el to do some testing
 #+BEGIN_SRC emacs-lisp
-  (defvar unscroll-point (make-marker)
-    "Cursor position for next call to 'unscroll'.")
-
-  (defvar unscroll-window-start (make-marker)
-    "Window start for next cal to 'unscroll'.")
-
-  (defvar unscroll-hscroll nil
-    "Hscroll for next call to 'unscroll'.")
-
-  (put 'scroll-up 'unscrollable t)
-  (put 'scroll-down 'unscrollable t)
-  (put 'scroll-left 'unscrollable t)
-  (put 'scroll-right 'unscrollable t)
-
-  (defun unscroll-maybe-remember ()
-    "Common function for 'unscroll'."
-    (if (not (get last-command 'unscrollable))
-        (progn
-          (set-marker unscroll-point (point))
-          (set-marker unscroll-window-start (window-start))
-          (setq unscroll-hscroll (window-hscroll)))))
-
-  (defadvice scroll-up (before remember-for-unscroll activate compile)
-    "Remember where we start from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defadvice scroll-down (before remember-for-unscroll activate compile)
-    "Remember where we started from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defadvice scroll-right (before remember-for-unscroll activate compile)
-    "Remember where we started from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defadvice scroll-down (before remember-for-unscroll activate compile)
-    "Remember where we started from, for 'unscroll'."
-    (unscroll-maybe-remember))
-
-  (defun unscroll ()
-    "Jump to location specified by 'unscroll-to'."
-    (interactive)
-    (if (not unscroll-point)
-        (error "Cannot unscroll yet"))
-    (goto-char unscroll-point)
-    (set-window-start nil unscroll-window-start)
-    (set-window-hscroll nil unscroll-hscroll))
+(require 'lua-mode)
 #+END_SRC
 * Custom
 ** headline auto indent when in evil+org-mode

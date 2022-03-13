@@ -57,3 +57,4 @@
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0))))
  '(org-table ((t nil))))
 (put 'narrow-to-page 'disabled nil)
+(put 'downcase-region 'disabled nil)
