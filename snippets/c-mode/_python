@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: _python
+# key: _python
+# --
+#include <stdlib.h>
+#include <stdio.h>
+#include <Python.h>
+
+int main(int argc, char *argv[]) {
+  Py_Initialize();
+  PyRun_SimpleString("import sys");
+  PyRun_SimpleString("sys.path.append(\\".\\")");
+  $0
+  Py_Finalize();
+  exit(0);
+}

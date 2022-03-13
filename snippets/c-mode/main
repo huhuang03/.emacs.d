@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: main
+# key: mainc
+# --
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+  $0
+  exit(0);
+}
