@@ -17,3 +17,5 @@ local.el
 server/
 flycheck_*
 network-security.data
+straight/
+test/

@@ -1,25 +1,43 @@
+;; initialize straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+  ;;; 这里下不下来怎么办？
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+  
 ;; use package.el to manager plugins and user a variable to define plugin list
 (when (>= emacs-major-version 24)
   (require 'package)
   (setq package-enable-at-startup nil)
   (package-initialize)
-  (setq package-archives '(
-                          ("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-                          ("elpy" . "https://jorgenschaefer.github.io/packages/")
-                          ("org" . "https://orgmode.org/elpa/")
-			  )))
+        )
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; enable org
+(straight-use-package 'org)
 
-(use-package org
-  :ensure t)
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
+;; 
+;; (use-package org
+;;   :ensure t)
+;; 
+;; (setq use-package-always-ensure t)
+;; 
+;; (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
 
-(setq use-package-always-ensure t)
+;; org-babel-load-file
+(org-babel-tangle test/test.org)
 
-(org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
+;; (org-bable-)
 
 
 (custom-set-variables
