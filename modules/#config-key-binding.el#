@@ -1,3 +1,0 @@
-(with-eval-after-load 'evil
-  ())
-(provide 'config-key-binding)
