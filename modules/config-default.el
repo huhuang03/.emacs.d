@@ -5,4 +5,8 @@
 ;; https://stackoverflow.com/questions/9760290/emacs-change-default-line-ending
 (setq default-buffer-file-coding-system 'utf-8-unix)
 
+;; auto complete parentheses
+(electric-pair-mode 1)
+
+
 (provide 'config-default)
