@@ -41,6 +41,7 @@
 
 ;; load local with no error
 (require 'config-local nil)
+(require 'config-key-binding nil)
 (require 'config-depend-local nil)
 
 ;; (unless (package-installed-p 'use-package)
