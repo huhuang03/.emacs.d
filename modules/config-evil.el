@@ -14,6 +14,15 @@
             ("<SPC> fc" . go-config-home)
 	    ;; any better idea to put a lambda here?
 	    ;; or any better idea to set by some keymap
-            ))
+            )
+	)
+
+(use-package key-chord
+  :straight t
+  :after evil
+  :config
+    (key-chord-mode 1)
+    (setq key-chord-two-keys-delay 0.5)
+    (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
 
 (provide 'config-evil)
