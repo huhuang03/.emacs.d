@@ -11,6 +11,10 @@
 	      ("<SPC><SPC>" . helm-M-x)
 	      ("<SPC>bb" . helm-buffers-list)
 	      )
+	;; (:map helm-swoop-map
+	;;       ("C-p" . helm-previous-line)
+	;;       ("C-n" . helm-next-line)
+	;;       )
     )
 
 (provide 'config-other)
