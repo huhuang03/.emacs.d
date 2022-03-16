@@ -1,2 +1,12 @@
 * Introduce
   Myself emacs config file
+
+* Some though
+** use ctrl + space to lead to custom key bindings.
+For now I use space as lead key and only works in evil-normal-state
+
+How about use ctrl + sapce as lead key in emacs all state?
+
+The key package is general
+
+Can I provide the basic binding and can switch by only modify only one place?
