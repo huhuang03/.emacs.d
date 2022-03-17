@@ -4,7 +4,7 @@
 
 (defun open-password-file ()
   (interactive)
-  (find-file (expand-file-name SOURCE_HOME "password/password.org.gpg"))
+  (find-file (expand-file-name "password/password.org.gpg" SOURCE_HOME))
   )
 
 (with-eval-after-load 'evil
