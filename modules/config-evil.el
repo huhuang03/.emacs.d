@@ -15,13 +15,16 @@
 	    ;; how to do on iwn?
             ("s-/" . comment-line)
             ("C-/" . comment-line)
+	    ("<tab>" . org-cycle)
 	    ;; any better idea to put a lambda here?
 	    ;; or any better idea to set by some keymap
             )
+    ;; fix tab in evil
     ;; :config
     ;; how to let this only work in org-mode?
 	;; (evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
     )
+
 
 (use-package key-chord
   :straight t

@@ -25,4 +25,10 @@
 	;;       )
     )
 
+;; docker file
+(use-package dockerfile-mode
+  :straight t
+  :mode ("Dockfile\\'" . dockerfile-mode)
+  )
+
 (provide 'config-other)
