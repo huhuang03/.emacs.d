@@ -9,4 +9,6 @@
 (electric-pair-mode 1)
 
 
+;; how about I define a keybinding prefix for evil-normal-mode(space) and all state(ctrl + x)?
+
 (provide 'config-default)

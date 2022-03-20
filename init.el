@@ -38,6 +38,7 @@
 (require 'config-window)
 (require 'config-evil)
 (require 'config-other)
+(require 'config-end)
 
 ;; load local with no error
 (require 'config-local nil)
