@@ -11,7 +11,7 @@
     :bind
         ;; put it for now, but better is separate to somewhere else?
         (:map evil-normal-state-map
-            ("<SPC> fc" . go-config-home)
+            ("<SPC>fc" . go-config-home)
 	    ;; how to do on iwn?
             ("s-/" . comment-line)
             ("C-/" . comment-line)

@@ -7,10 +7,16 @@
   (find-file (expand-file-name "password/password.org.gpg" SOURCE_HOME))
   )
 
+
+(defun go-gtd-file ()
+  (interactive)
+  (find-file (expand-file-name "org/gtd.org" SOURCE_HOME)))
+
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "<SPC>bk") 'kill-current-buffer)
   (define-key evil-normal-state-map (kbd "/") 'helm-swoop)
   (define-key evil-normal-state-map (kbd "<SPC> fpp") 'open-password-file)
+  (define-key evil-normal-state-map (kbd "<SPC>ft") 'go-gtd-file)
   )
 (provide 'config-key-binding)
 

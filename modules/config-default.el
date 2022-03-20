@@ -12,6 +12,10 @@
 (setq make-backup-files nil)
 
 
-;; how about I define a keybinding prefix for evil-normal-mode(space) and all state(ctrl + x)?
+;; Config keybinding
+(setq th/my-keymap '())
+
+(defun th/add-key (key binding)
+  (setq th/my-keymap (append th/my-keymap (list (list key binding)))))
 
 (provide 'config-default)

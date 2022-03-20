@@ -13,16 +13,12 @@
     :straight t
     :init
     (helm-mode 1)
+    (th/add-key "ff" 'helm-find-files)
     :bind
         (:map evil-normal-state-map
-              ("<SPC>ff" . helm-find-files)
 	      ("<SPC><SPC>" . helm-M-x)
 	      ("<SPC>bb" . helm-buffers-list)
 	      )
-	;; (:map helm-swoop-map
-	;;       ("C-p" . helm-previous-line)
-	;;       ("C-n" . helm-next-line)
-	;;       )
     )
 
 ;; docker file

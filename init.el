@@ -38,12 +38,13 @@
 (require 'config-window)
 (require 'config-evil)
 (require 'config-other)
-(require 'config-end)
 
 ;; load local with no error
 (require 'config-local nil)
 (require 'config-key-binding nil)
 (require 'config-depend-local nil)
+
+(require 'config-end)
 
 ;; (unless (package-installed-p 'use-package)
 ;;   (package-refresh-contents)
