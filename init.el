@@ -1,3 +1,5 @@
+;; For now, it's not useable.
+
 ;; Set default coding system (especially for Windows)
 (set-default-coding-systems 'utf-8)
 
@@ -40,6 +42,7 @@
 (require 'config-other)
 
 ;; load local with no error
+;; should config SOURCE_HOME in config-local.
 (require 'config-local nil)
 (require 'config-key-binding nil)
 (require 'config-depend-local nil)

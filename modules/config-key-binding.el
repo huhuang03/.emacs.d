@@ -12,11 +12,17 @@
   (interactive)
   (find-file (expand-file-name "org/gtd.org" SOURCE_HOME)))
 
+(defun go-dired ()
+  (interactive)
+  (dired nil))
+
+(th/add-key "fd" 'go-dired)
+(th/add-key "bk" 'kill-current-buffer)
+(th/add-key "fpp" 'open-password-file)
+(th/add-key "ft" 'go-gtd-file)
+
 (with-eval-after-load 'evil
-  (define-key evil-normal-state-map (kbd "<SPC>bk") 'kill-current-buffer)
   (define-key evil-normal-state-map (kbd "/") 'helm-swoop)
-  (define-key evil-normal-state-map (kbd "<SPC> fpp") 'open-password-file)
-  (define-key evil-normal-state-map (kbd "<SPC>ft") 'go-gtd-file)
   )
 (provide 'config-key-binding)
 
