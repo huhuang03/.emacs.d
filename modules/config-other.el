@@ -27,4 +27,28 @@
   :mode ("Dockfile\\'" . dockerfile-mode)
   )
 
+(use-package command-log-mode
+  :straight t
+  )
+
+(use-package lsp-mode
+  :straight t
+  :init
+  ;; look like you can set back by something else.
+  (setq lsp-mode-prefix "C-c l")
+  ;; To defer LSP server startup(and DidOpen notifications)
+  ;; until the buffer is visible
+  ;; how can I deisable fly-check only in python mode?
+  :hook (python-mode . lsp-deferred)
+  :commands (lsp-deferred)
+  )
+;; (use-package python-mode
+;;   :hook (python-mode . lsp-defered))
+
+;; For now, I don't know what helm-lsp is.
+;; So you can delete it if you like
+(use-package helm-lsp
+  :straight t
+  :commands helm-lsp-workspace-symbol)
+
 (provide 'config-other)
