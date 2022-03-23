@@ -10,7 +10,7 @@
 
 ;; don't gen back file xx~
 (setq make-backup-files nil)
-
+(setq create-lockfiles nil)
 
 ;; Config keybinding
 (setq th/my-keymap '())
