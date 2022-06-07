@@ -18,4 +18,6 @@
 (defun th/add-key (key binding)
   (setq th/my-keymap (append th/my-keymap (list (list key binding)))))
 
+(server-start)
+
 (provide 'config-default)

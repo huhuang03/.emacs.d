@@ -2,11 +2,15 @@
   (interactive)
   (kill-buffer nil))
 
-(defun open-password-file ()
+(defun th/open-password-file ()
   (interactive)
   (find-file (expand-file-name "password/password.org.gpg" SOURCE_HOME))
   )
 
+(defun th/open-password-no-pass-file ()
+  (interactive)
+  (find-file (expand-file-name "password/password_no_password.org" SOURCE_HOME))
+  )
 
 (defun go-gtd-file ()
   (interactive)
@@ -18,7 +22,8 @@
 
 (th/add-key "fd" 'go-dired)
 (th/add-key "bk" 'kill-current-buffer)
-(th/add-key "fpp" 'open-password-file)
+(th/add-key "fpp" 'th/open-password-file)
+(th/add-key "fpo" 'th/open-password-no-pass-file)
 (th/add-key "ft" 'go-gtd-file)
 
 (with-eval-after-load 'evil

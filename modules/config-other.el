@@ -3,7 +3,11 @@
 
 ;; config 
 (require 'epa-file)
-(custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
+;; check and config.
+(if (eq system-type 'windows-nt)
+    (custom-set-variables '(epg-gpg-program  "E:/Program Files (x86)/GnuPG/bin/gpg.exe"))
+  (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg")))
+
 (setq epa-file-select-keys 0)
 (setq epa-pinentry-mode 'loopback)
 
@@ -20,6 +24,9 @@
 	      ("<SPC>bb" . helm-buffers-list)
 	      )
     )
+
+(use-package helm-swoop
+  :straight t)
 
 ;; docker file
 (use-package dockerfile-mode
