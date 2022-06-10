@@ -1,0 +1,3 @@
+cp ~/.emacs.d ~/.emacs.d.bck || true
+
+ln -s $(pwd) ~/.emacs.d

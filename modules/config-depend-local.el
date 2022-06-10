@@ -2,6 +2,6 @@
 
 (add-to-list 'load-path (expand-file-name "th-posts.emacs" SOURCE_HOME))
 
-(require 'th-posts-mode)
+(require 'th-posts-mode nil 'noerror)
 
 (provide 'config-depend-local)
