@@ -12,11 +12,15 @@
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
 
-;; Config keybinding
-(setq th/my-keymap '())
+(defvar th/my-keymap '()
+  "type-of value is '(item-value item-desc)
+and type-of item-value is")
 
-(defun th/add-key (key binding)
-  (setq th/my-keymap (append th/my-keymap (list (list key binding)))))
+(defun th/add-key (key binding &optional doc)
+  "KEY is the string sequence
+BINDING is the symbol which function to call
+DOC is the doc"
+  (setq th/my-keymap (append th/my-keymap (list (list key binding doc)))))
 
 (server-start)
 
