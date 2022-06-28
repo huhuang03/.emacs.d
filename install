@@ -1,3 +1,3 @@
-cp ~/.emacs.d ~/.emacs.d.bck || true
+[ -f ~/.eamcs.d ] && cp ~/.emacs.d ~/.emacs.d.bck
 
 ln -s $(pwd) ~/.emacs.d
