@@ -58,4 +58,25 @@
   :straight t
   :commands helm-lsp-workspace-symbol)
 
+;; give presentation with org-mode
+(defun th/presentation-setup ()
+  (setq text-sacle-set 3)
+  (org-display-inline-images))
+
+(defun th/presentation-end ()
+  (text-scale-set 1))
+
+(use-package org-tree-slide
+  :straight t
+  :hook ((org-tree-slide-play . th/presentation-setup)
+	 (org-tree-slide-stop . th/presentation-end))
+  :custom
+  (org-image-actual-width nil))
+
+;; enable some org things
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
+
 (provide 'config-other)
+
