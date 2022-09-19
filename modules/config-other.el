@@ -61,7 +61,8 @@
 ;; give presentation with org-mode
 (defun th/presentation-setup ()
   (setq text-sacle-set 3)
-  (org-display-inline-images))
+  ;; (org-display-inline-images)
+  )
 
 (defun th/presentation-end ()
   (text-scale-set 1))
