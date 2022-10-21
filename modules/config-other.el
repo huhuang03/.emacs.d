@@ -69,6 +69,10 @@
 
 (use-package org-tree-slide
   :straight t
+  :bind (
+	 ("<f9>" . 'org-tree-slide-move-previous-tree)
+	 ("<f10>" . 'org-tree-slide-move-next-tree)
+	 )
   :hook ((org-tree-slide-play . th/presentation-setup)
 	 (org-tree-slide-stop . th/presentation-end))
   :custom
