@@ -40,6 +40,7 @@
 (require 'config-window)
 (require 'config-evil)
 (require 'config-other)
+(require 'config-languages)
 
 ;; load local with no error
 ;; should config SOURCE_HOME in config-local.
