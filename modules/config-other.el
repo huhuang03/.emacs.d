@@ -3,9 +3,18 @@
 
 ;; config 
 (require 'epa-file)
+
+(defun th-find-gpg ()
+  "Find gpg exe path in windows"
+  (interactive)
+  (if (file-exists-p "E:/Program Files (x86)/GnuPG/bin/gpg.exe")
+      "E:/Program Files (x86)/GnuPG/bin/gpg.exe"
+	"C:/Program Files (x86)/GnuPG/bin/gpg.exe"))
+
 ;; check and config.
 (if (eq system-type 'windows-nt)
-    (custom-set-variables '(epg-gpg-program  "E:/Program Files (x86)/GnuPG/bin/gpg.exe"))
+    ;; how can i find gpg??
+    (custom-set-variables '(epg-gpg-program  (th-find-gpg)))
   (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg")))
 
 (setq epa-file-select-keys 0)
