@@ -14,7 +14,10 @@
 
 (defun go-gtd-file ()
   (interactive)
-  (find-file (expand-file-name "org/gtd.org" SOURCE_HOME)))
+  (if (file-exists-p (expand-file-name "org/gtd_local.org" SOURCE_HOME))
+      (find-file (expand-file-name "org/gtd_local.org" SOURCE_HOME))
+    (find-file (expand-file-name "org/gtd.org" SOURCE_HOME)))
+  )
 
 (defun go-dired ()
   (interactive)
