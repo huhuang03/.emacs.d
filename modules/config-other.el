@@ -14,8 +14,9 @@
 ;; check and config.
 (if (eq system-type 'windows-nt)
     ;; how can i find gpg??
-    (custom-set-variables '(epg-gpg-program  (th-find-gpg)))
-  (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg")))
+    (setq epg-gpg-program  (th-find-gpg))
+  (setq epg-gpg-program  "/usr/local/bin/gpg"))
+
 
 (setq epa-file-select-keys 0)
 (setq epa-pinentry-mode 'loopback)
