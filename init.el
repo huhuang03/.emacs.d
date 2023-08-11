@@ -6,7 +6,7 @@
 ;; Add the modules folder to the load path
 (add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
 
-;; initialize straight.el
+;; initial straight, use this as package manager
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -20,7 +20,7 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-  
+
 ;; use package.el to manager plugins and user a variable to define plugin list
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -28,12 +28,7 @@
   (package-initialize)
         )
 
-;; straight integration with use-package
-(straight-use-package 'use-package)
-
-;; enable org
-(straight-use-package 'org)
-
+(use-package org)
 
 (require 'config-default)
 (require 'config-ui)
@@ -49,22 +44,6 @@
 (require 'config-depend-local nil)
 
 (require 'config-end)
-
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-;; 
-;; (use-package org
-;;   :ensure t)
-;; 
-;; (setq use-package-always-ensure t)
-;; 
-;; (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
-
-;; org-babel-load-file
-;; (org-babel-tangle-file test/test.org)
-
-;; (org-bable-)
 
 
 (custom-set-variables
