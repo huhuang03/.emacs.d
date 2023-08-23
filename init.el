@@ -43,7 +43,6 @@
 (require 'config-key-binding nil)
 (require 'config-depend-local nil)
 
-(require 'config-end)
 
 
 (custom-set-variables
@@ -84,3 +83,6 @@
  '(org-table ((t nil))))
 (put 'narrow-to-page 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+
+(require 'config-end)
