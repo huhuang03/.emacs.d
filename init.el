@@ -1,5 +1,3 @@
-;; For now, it's not useable.
-
 ;; Set default coding system (especially for Windows)
 (set-default-coding-systems 'utf-8)
 
@@ -48,6 +46,7 @@
 (require 'config-key-binding nil)
 (require 'config-depend-local nil)
 
+;; why so much?
 (require 'config-end)
 
 ;; (unless (package-installed-p 'use-package)
@@ -75,7 +74,6 @@
  '(doc-view-ghostscript-options
    '("-dNOSAFER" "-dNOPAUSE" "-sDEVICE=png16m" "-dTextAlphaBits=4" "-dBATCH" "-dGraphicsAlphaBits=4" "-dQUIET"))
  '(doc-view-ghostscript-program "/usr/local/bin/gs")
- '(epg-gpg-program "E:/Program Files (x86)/GnuPG/bin/gpg.exe")
  '(org-agenda-files '("~/source/org/gtd.org"))
  '(package-selected-packages
    '(key-chord-mode yasnippet-snippets groovy-mode csharp-mode yaml-mode lua-mode go-mode web-mode cmake-mode markdown-mode github-modern-theme projectile json-mode neotree evil-magit htmlize tiny yasnippet flycheck ace-jump-mode evil monokai-theme key-chord general exec-path-from-shell evil-surround auto-complete auto-complete-c-headers company all-the-icons)))

@@ -8,14 +8,20 @@
   "Find gpg exe path in windows"
   (interactive)
   (if (file-exists-p "E:/Program Files (x86)/GnuPG/bin/gpg.exe")
-      "E:/Program Files (x86)/GnuPG/bin/gpg.exe"
+      "E:/Program Files (x86)/GnuPG/bin/gpg.exe1"
 	"C:/Program Files (x86)/GnuPG/bin/gpg.exe"))
+
 
 ;; check and config.
 (if (eq system-type 'windows-nt)
     ;; how can i find gpg??
     (setq epg-gpg-program  (th-find-gpg))
   (setq epg-gpg-program  "/usr/local/bin/gpg"))
+
+(if (eq system-type 'windows-nt)
+    ;; how can i find gpg??
+    (message "is windows-nt")
+  (message "is not windows-nt"))
 
 
 (setq epa-file-select-keys 0)
@@ -95,4 +101,3 @@
 (setq org-src-preserve-indentation t)
 
 (provide 'config-other)
-
