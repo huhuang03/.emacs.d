@@ -17,12 +17,4 @@
 
 ;; set font to IntelOne Mono
 
-
-
-(font-family-list)
-
-
-;; set font size, default is 100
-(set-face-attribute 'default nil :height 120)
-
 (provide 'config-ui)
