@@ -11,5 +11,3 @@
 
 (set-face-attribute 'default nil :height 200)
 (provide 'config-end)
-
-

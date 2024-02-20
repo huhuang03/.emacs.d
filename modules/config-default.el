@@ -26,7 +26,6 @@ DOC is the doc"
 
 (server-start)
 
-;; try decide the SOURCE_HOME folder
 (defun th/detect_src_home ()
   (if (file-exists-p (expand-file-name "~/source"))
       (expand-file-name "~/source")
