@@ -1,8 +1,6 @@
 (use-package tex
   :ensure auctex)
-;; (use-package auctex
-;;   :ensure t)
-;; yaml
+
 (use-package yaml-mode
   :ensure t
   :config
@@ -10,5 +8,10 @@
 		'("\\.yml\\'" . yaml-mode)
 		'("\\.yaml\\'" . yaml-mode)
 	       ))
+
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs\\'"
+  :defer t)
 
 (provide 'config-languages)
