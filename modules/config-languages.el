@@ -7,4 +7,9 @@
 		'("\\.yaml\\'" . yaml-mode)
 	       ))
 
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs\\'"
+  :defer t)
+
 (provide 'config-languages)

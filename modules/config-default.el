@@ -35,4 +35,19 @@ DOC is the doc"
 
 (setq SORUCE_HOME (th/detect_src_home))
 
+
+;; prevent create a new file as name :w, because it's always a mistake
+(defun th-guard-file-not-mistake-w ()
+  (interactive)
+  (if (string= buffer-file-name ":w")
+      (message "You probably mistake write a :w file")
+    (message "buffer-file-name: %s" buffer-file-name)
+    )
+  )
+
+(add-hook 'before-save-hook 'th-guard-file-not-mistake-w)
+(add-hook 'write-file-hook 'th-guard-file-not-mistake-w)
+;; not work and don't know why
+;; very starnge that this call when write config-default.el, but not :w
+
 (provide 'config-default)
