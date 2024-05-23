@@ -1,6 +1,3 @@
-(use-package tex
-  :ensure auctex)
-
 (use-package yaml-mode
   :ensure t
   :config

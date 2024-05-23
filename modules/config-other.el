@@ -1,28 +1,23 @@
 ;; This is something I didn't decide where to put
 
 
-;; config 
+;; epa
 (require 'epa-file)
 
 (defun th-find-gpg ()
-  "Find gpg exe path in windows"
-  (interactive)
-  (if (file-exists-p "E:/Program Files (x86)/GnuPG/bin/gpg.exe")
-      "E:/Program Files (x86)/GnuPG/bin/gpg.exe1"
-	"C:/Program Files (x86)/GnuPG/bin/gpg.exe"))
+  "Find gpg exe path in Windows"
+  (let ((gpg-paths '("E:/Program Files (x86)/GnuPG/bin/gpg.exe"
+                     "C:/Program Files (x86)/GnuPG/bin/gpg.exe")))
+    (cl-loop for path in gpg-paths
+             when (file-exists-p path)
+             return path)))
 
 
 ;; check and config.
-(if (eq system-type 'windows-nt)
-    ;; how can i find gpg??
-    (setq epg-gpg-program  (th-find-gpg))
-  (setq epg-gpg-program  "/usr/local/bin/gpg"))
-
-(if (eq system-type 'windows-nt)
-    ;; how can i find gpg??
-    (message "is windows-nt")
-  (message "is not windows-nt"))
-
+(setq epg-gpg-program (if (eq system-type 'windows-nt)
+                          (or (th-find-gpg)
+                              "C:/Program Files (x86)/GnuPG/bin/gpg.exe")
+                        "/usr/local/bin/gpg"))
 
 (setq epa-file-select-keys 0)
 (setq epa-pinentry-mode 'loopback)

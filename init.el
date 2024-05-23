@@ -10,7 +10,6 @@
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
-  ;;; 这里下不下来怎么办？
     (with-current-buffer
         (url-retrieve-synchronously
          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
@@ -19,15 +18,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; use package.el to manager plugins and user a variable to define plugin list
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (setq package-enable-at-startup nil)
-  (package-initialize)
-        )
-
-(use-package org)
-
+(require 'config-basic)
 (require 'config-default)
 (require 'config-ui)
 (require 'config-window)
