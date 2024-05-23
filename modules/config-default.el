@@ -27,10 +27,13 @@ DOC is the doc"
 (server-start)
 
 (defun th/detect_src_home ()
-  (if (file-exists-p (expand-file-name "~/source"))
-      (expand-file-name "~/source")
-    "")
-  )
+  (if (and (eq system-type 'windows-nt)
+          (file-exists-p "D:/source"))
+    "D:/source"
+    (if (file-exists-p (expand-file-name "~/source"))
+          (expand-file-name "~/source")
+        "")
+    ))
 
 (setq SORUCE_HOME (th/detect_src_home))
 
