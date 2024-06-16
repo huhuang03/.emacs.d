@@ -28,7 +28,7 @@
 
 ;; load local with no error
 ;; should config SOURCE_HOME in config-local.
-(require 'config-local nil)
+(require 'config-local nil t)
 (require 'config-key-binding nil)
 (require 'config-depend-local nil)
 
