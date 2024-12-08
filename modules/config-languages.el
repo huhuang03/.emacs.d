@@ -11,4 +11,8 @@
   :mode "\\.rs\\'"
   :defer t)
 
+(use-package json-mode
+  :ensure t
+  :mode "\\.json\\'")
+
 (provide 'config-languages)
