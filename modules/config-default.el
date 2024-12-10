@@ -27,11 +27,12 @@ DOC is the doc"
 (server-start)
 
 (defun th/detect_src_home ()
-  (if (file-exists-p (expand-file-name "~/source"))
-      (expand-file-name "~/source")
-    "")
-  )
+  (let ((possible-paths '("G:/source" "E:/source" "D:/source" (expand-file-name "~/source"))))
+    (cl-loop for path in possible-paths
+      if (file-exists-p path)
+        return path
+        finally return "")))
 
-(setq SORUCE_HOME (th/detect_src_home))
+(setq SOURCE_HOME (th/detect_src_home))
 
 (provide 'config-default)
