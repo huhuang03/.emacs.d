@@ -24,7 +24,10 @@ BINDING is the symbol which function to call
 DOC is the doc"
   (setq th/my-keymap (append th/my-keymap (list (list key binding doc)))))
 
-(server-start)
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 
 (defun th/detect_src_home ()
   (let ((possible-paths '("G:/source" "E:/source" "D:/source" (expand-file-name "~/source"))))
