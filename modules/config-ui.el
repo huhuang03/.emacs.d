@@ -15,6 +15,8 @@
 		(string-match-p "spacing=100" (aref info 1))))
 		(font-family-list))))
 
-;; set font to IntelOne Mono
+;; hide toolbars
+(tool-bar-mode -1)
 
+;; set font to IntelOne Mono
 (provide 'config-ui)
