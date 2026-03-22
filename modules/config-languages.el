@@ -78,4 +78,10 @@
 (setq org-preview-latex-default-process 'dvisvgm)
 
 
+(use-package eglot
+  :ensure t)
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+
+(add-to-list 'auto-mode-alist '("\\.buckconfig\\'" . conf-mode))
+
 (provide 'config-languages)
